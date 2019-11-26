@@ -1,0 +1,26 @@
+
+
+🐒🦍🦄🎇👷🚵🤾🛅🎎
+😂😆😉👌👍😊😏😬😎👄💋😘😗😙😚
+😭😦😧😨😩😰😱😵😍💗💙💚💛💜💝
+🔥💪✊👊✋👋👏👐🙌🙏👈👉👆👇⏳⏰🕛
+🚂🚃🚄🚅🚆🚇🚈🚉🚊😺😸😹😻😼😽
+🐒🦍🦄🎇👷🚵🤾🛅🎎
+
+
+
+
+do
+  let dilei a b c= delay a #delayt b # delayfb c
+      m c = sound "midi" # midichan c
+      cc a b c = control (range 0 127 $ c) # m a # ctlNum b # midicmd "control"
+      d = scale "lydian"
+      p = "[0]/8"
+      -- telegram: @tidalfun_bot
+  d1 $ stack[
+    s "~",   --  waiting player  
+    s "~",   --  waiting player
+    s "~",   --  waiting player
+    s "~",   --  waiting player
+    s "~",
+    s "~"]

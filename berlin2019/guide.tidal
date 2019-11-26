@@ -1,0 +1,105 @@
+
+d2 $ s "[feel:1*4,<jungbass:4 swbd> <swsn:3 swsn:3(9,12)?>]/2" # dilei "<0.5 0.7 0.3>" "0.333 0.166" 0.45 # orbit 1
+
+d3 $ note (scale "dorian" $ swing 0.66 $ round <$>(segment ("2 4") $ (slow 8 $ tri)*7)) # s "bass8" +gain 1 # shape 0.3 # cut 3
+
+do
+  let pat = "[-2 -1 0 0]/8"
+      d p = note (scale "ionian" p)
+  d1 $ stack[
+    s "[swbd, ~ swsn:3]" # orbit 3,
+    s "[<feel:1 feel:2 ~>]*4" # orbit 2 # dilei 0.5 0.25 0.6,
+    -- slow 4 $ shuffle 16 $ striate 16 $ s "drums" # gain 1.2,
+    -- off 0.5 ((#coarse (slow 8 $ "10 .. 40 40 .. 0")).(#cut 10).(#pan 0.25)) $ d (round <$> ((sometimes (fast 2) "0*4")|+(slow 2.3 $ tri*10))) # begin (slow 3 $ sine*0.7+0.2)  # shape 0.45 # cut 3 # s "~ chant ~ ~" + note 2 # orbit 2 #pan 0.75 # room 0.3 # gain 1.15,
+    -- d (round <$> ("0*8"|+(slow 2 $ sine*8+rand*4))+4) # begin 0.25 # cut 4 # s "sax" + note 3 # coarse 5,
+    -- every 2 ((+note "-12").(#cut 6)) $ d (within (0.5,0.75) (slow 2) $ round <$> ((slow 4 $ "0*8")|+ (slow 2 $ sine*7+rand*4))+pat) # begin 0.25 # cut 5 # s "porn3:0"# coarse "1 4 2 16" ,
+    slow "<4 8 4>" $ striate' "<16 32>" 0.1 $ s "porn2" # n (irand 6 ) # shape 0.3 ,
+    -- d ("{0 [6 7] 0 0 [6 7] 0 0 [7 11]}%4"+pat) # s "bass8" # shape 0.45 # sus 0.2 # gain 1.1,
+    d ("{0 0 ~ [6 7] 0}%4"+pat-7) # midi "0",
+    d ("[~!3 [7]]/2") # midi "0" # gain 1.3,
+    d ("<0*8 0*4>"|+(irand 12)+7) # midi "<~ 5 >",
+    -- d (stut' 4 "0.125 0.25" (+"2 4") $ "0*4"+7) # midi "4" # sus 0.2 # gain 1.32,
+    cc 4 10 (slow 4 $ range 0.3 0.7 $  sine) ,
+    s "~"]
+
+
+-- drums, shuffle
+-- sax + 3, chant + 2, round sine rand 0*8|+
+-- off, cut
+-- delaaay, coarse, crush
+-- bass8 & midi ... portamento high
+-- porn3, begin 0.25
+-- midi5, rest, irand
+-- midi4, stut, +"2 4", #sus
+-- cc bass
+
+
+
+let hue = pF "hue"
+
+let saturation = pF "saturation"
+
+let value = pF "value"
+
+      
+
+do
+  let pat = "[0 1 2 3]/16"
+      d p = note (scale "mixolydian" p)
+  d1 $ stack[
+    -- every 2 (iter 4) $ s "[swbd cp]" # orbit 3 # gain 1.1 ,   --  waiting player
+    -- timeLoop 2 $ s "[<feel:1 feel:2 <cp ~> >]*8" ,
+    s "[tabla(<25 21>,32,<0 0 0 2>)]/4" # gain 1.12 # n (irand 12) # cut 4 ,
+    s "[[swbd*2 ~] swsn:3]" # gain 0.95 # orbit 3,
+    s "[jungbass]/4" # gain 0.95 ,
+    s "[gab(9,16)]/4" # note "[0 5]/8" # gain 0.95 # n (within (0,0.125) (const $ "0") $ "0*8"+irand 8) ,
+    -- (jux (shuffle 4))$ slow 4 $ shuffle 8 $ striate 16 $ s "drums" # gain 1.02,
+    -- s "drums*4" # begin ((irand 16)/16) # end ((1+ irand 16)/16) # gain 1.2,
+    -- slow 4 $ shuffle 4 $ striate 16 $ s "drums" # gain 1.12,
+    -- d ("[-7]"+pat) # s "chant" +note 2 # orbit 2 |+ n (choose([0,3,6])) # sus 0.5,
+    -- d (round <$> ((slow (choose([1,2,4,8])) $"0*8")|+(slow 4 $ sine*4 + rand*4))) # begin (slow 3 $ sine*0.5+0.2) # shape 0.35 # s "chant" + note 2 # orbit 2 # crush (4+(irand 4)),
+    -- d ("[0,4,6]+0"+pat) +gain 1.2 # begin (0.0125)  # end 0.12  # s "cello:2"  # orbit 2 # dilei 0.4 "0.125 0.25" 0.4,
+    -- d ((timeLoop 2 $  "{0 7 ~}%4")+pat) # s "bass8"# shape 0.3 # sus 0.16,
+    -- superimpose ((0.25 <~).(const $ d (7+"[5 4 0 -1]/16") # gain 0.75 # midi "9")) $ d ((fast 4 $ "[0,2,<4 5 6>]")+pat) # midi "9" + gain 0.94,
+    -- d ( "[0(6,8)?]"+pat-7)  # midi "0",
+    -- d ("[4,6,8,<10 12 11 13>](<4 6>,8,0)"+pat) # midi "[3,6]" + gain 0.85,
+    -- swing 2.5 $ slow 2 $ n (run 8) # s "tabla2" # gain 0.8 ,
+    -- swing 2.5 $ n (" 4 .. 7") # cut 6 #  s "dr" # gain 0.8,
+    -- d (degrade $ "0*8"|+irand 16)  #  s "cello" # n (-1+irand 2) # begin (0.01+(slow 4 $ sine*0.5))# cut 3 # pan 0.5 # shape 0.4,
+    --d (degrade $ "[0,3,6,9]/2"|+2*(irand 4)-7)  #  midi "0" # sustain 1.63 ,
+    -- d (swing (slow 4 $ range 2.5 2.5 $ tri) $ off "<0.125 0.125>" ((+("[7 .. 4 4 7 [6 7]]/4")).(degradeBy 0.02)) $ arpg $ "[2,4,6,<6 7 8 9 10>]"+pat-7) # sus 0.2 # midi "5" # gain "0.88"  + gain "[0.1 0]/3",
+    -- d (off 0.25 (+(7)) $ degrade $ "[7 .. 0]"|+pat+7) # sus (rand*0.3) # midi "< ~ 5 ~ 4>",
+    -- d (off 0.25 (+(irand 7)) $ "[0 .. 7 7 ..0]/2"+pat+7) # midi "< ~ 5 ~ >",
+    s "~"]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+do
+  let d = scale "lydian"
+      p = "[2 -1 0 0]/16"
+  d1 $ stack [
+    s "👉*4",
+    s "[💚]" # orbit 3,
+    s "[ ~ 🙏]" # orbit 3,
+    jux (shuffle 1) $ slow 4 $  striate 16 $ s "drums" # gain 0.95,
+    -- note (d $ "{0 ~ }%4"+p) # s "bass8/4" # shape 0.3 # sus 0.3,
+    note (d $ "{0 0 7 0 ~ [6 7] ~ }%4"+p-7) # gain 0.82 # midi "0" # sus 0.2,
+    degrade $ note (d $ "[~!3 7]"+p) # gain 0.88 # midi "0",
+    degrade $ note (d $ (degrade $"0*8"|+irand 8)+7) # gain 1.0 # midi "<~ 5 ~ ~>",
+    degrade $ note (d $ degrade $"[2,4,6,<8 9 10 11>](2,8,<0 2>)"+p) # gain 0.7 # midi "[2,3]" # sus 0.12,
+    degrade $ note (d $ round <$> (degrade $ "0*4"|+(slow 4 $ tri*7+rand*4))-7) # s "<porn3 ~ ~ ~>" # gain 0.85 # cut 3  # shape 0.2 # begin (0.25) # orbit 2 # dilei 0.4 0.5 0.5 # coarse "[4 .. 16]/4",
+    degrade $ note (d $ round <$> (("0*4")|+(slow 3 $ sine*7))) # s "sax" # gain 0.79 + note 3 # cut 3  # shape 0.3 # begin (slow 3 $ sine*0.6 +0.15) # coarse "[0 .. 8 8 .. 0]/2",
+    --note (d $ round <$> (("0*8")|+(slow 3 $ sine*12+rand*1))) # s "sax/4" # gain 0.825 +note 3 # cut 3 # shape 0.35 # begin (slow 3 $ sine*0.6 +0.15) # coarse "[0 .. 10 10 .. 0]/2",
+    s "{~}"]

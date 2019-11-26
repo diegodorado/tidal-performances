@@ -1,0 +1,8 @@
+setcps (90/60/4)
+
+let base = "[0 3 4 0]/8"
+    ns p = note (scale "dorian" p) + 3
+    m2 = p 11 . (|< orbit 0). (# midi 1)
+    m3 = p 12 . (|< orbit 0). (# midi 2)
+
+m2 $ ns ( ( fast 4 $ arpeggiate $ "[0,2,4,<6 8 9>]") + base) # gain 0.96

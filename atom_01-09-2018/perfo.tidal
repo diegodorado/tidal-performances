@@ -1,0 +1,32 @@
+
+
+do
+  let d = toScale (Sound.Tidal.Scales.aeolian)
+  --let p = (  "[4 [3 4] 0 <[1 [3 5]] [[3 1] [5 3]]>]/8")
+  let p = (  "[0 2 4 3 0 2 1 6]/16")
+  let m c = sound "midi" # midichan c
+  let cc ch num p = control (scale 0 127 $ p) # sound "midi" # midichan ch # midicmd "control" # ctlNum num
+  d1 $ stack[
+    whenmod 16 16 (const $ s "swsn:0*12" |=| speed (scale 2 1 $slow 2 $ saw)# orbit 3 # room 0.25) $ jux (#speed (scale 0.5 0.98 $ slow 3.3 $tri)) $ s "[swbd:0 swbd:0/2 ~!2] <swsn:0 swsn:3(7,8)? swsn:0 [feel:3 feel:4]>]" # orbit 3 # room 0.25,
+    --slow 4 $ jux (shuffle 8) $  chop 16 $ s "drums" # gain 1.2 #shape 0.35 # orbit 3,
+    --slow 4 $ striate' "[128 16 32 64 32]" 0.41 $ s "jungbass:19" # gain 1.2 ,
+    --s "[swbd:1 swsn:0 swbd:1 [swsn:1 <swsn:0 [~ swsn:1*2?]>]]/2" # orbit 3 # room 0.25,
+    --n (d $ "[0 1 [ ~ 3 ~ 4]]/4"+"14 21"+p) # s "[rash,pulse]" # delay 0.6 # delayt "<0.125 0.25 0.5>" #delayfb 0.75 # gain 0.9 # orbit 1,
+    --((iter 4 $"0 0.125 0.25") ~> ) $ n (iter 2 $"1*2 2*4") # s "feel",
+    --n "~ <1 2>!7" # s "feel" # lpf (scale 1600 3000 $ rand),
+    --n (d $ "0(<3 3 3 5>,8)"+"[0,2,4,<[8 9] 6 7>]"+p) # s "rhodes" # delay 0.4 # delayt 0.25 #delayfb 0.5 # accelerate (0.015) # gain "1 0.75" # legato 1.5,
+    --n (d $ off 0.33 (+7) $ "7 8 9 10"+7+p) # s "[rash]" # delay 0.06 # delayt 0.44 #delayfb 0.75 # gain 0.9,
+    --whenmod 16 8 ((#note (d $ "[-7]" + p)).(# m "[0]")) $ note (d $ "{[0 0?] <7 4 ~> [~ <4 5>] <0 0 .. 4 0 [7,<10 11*2>]> 0}%4"+"[-7,0]" + p) # m "[0,1]",
+    --note (d $ every 3 (+"[0,4]") $ every 4 (+"7 10 9") $ "{0*2 [7 0] 0 [4 .. 7]}%4"+"[-7,0]"+p) # m "[0,1]" # gain 1,
+    --note (d $ "[~ 0!7]"+"[-7]" + p) # m "[0,<1 ~>]" # sustain 0.3 # gain 1.5,
+    note (d $ "0/2"+"[0,2,4,<6 8 7>]" + p) # m "[3,2]",
+    note (d $ (fast 2 $ "~ 0!3")-7+ p) # m "[0]",
+    cc 0 7 1,
+    note (d $ (fast 2 $ "{0 7 0 [4 7] 0}%4")-7+ p) # m "[1]",
+    --slow 4 $ (#n (irand 8)) $ s "porn3" # gain 0.85 # shape 0.2 # pan 0,
+    whenmod 16 4 (#note "~") $ note (d $ degrade $ "0*8"+(irand 20) + p) # m "[5]",
+    --note (d $  (stut' 3 0.125 (+"3")) $ "[0 2 4 <6 7 8 10>]"+p) # m "[4]",
+    --slow "<4 1 8>" $ striate' "<32 16 64 32>" 0.1 $ (#n (irand 8)) $ s "<porn2 chant>" # gain "<0.85 1>" # shape "<0.2 0.35>" # pan (slow 4.3 $ sine),
+    --n (d $ (sometimes (fast 2) $ sometimes (off 0.25 (+7)) $ "{0 4 0 0 0}%4" +"0" + "[[0 -1] <[0 1] [2 .. -6]> 0 0]/8") + p) # s "bass8" # shape 0.3 # gain 1,
+    --note (d $ "0 {2 ~ ~}%1 4 <6 ~>" + p) # m 1,
+    s "~" ]

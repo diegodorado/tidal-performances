@@ -1,0 +1,86 @@
+
+-- SUper low and dark
+do
+  let d = toScale (Sound.Tidal.Scales.aeolian)
+  let p = (  "[0 2 4 3 0 2 1 6]/16")
+  let m c = sound "midi" # midichan c
+  d1 $ stack[
+    slow 4 $ striate' "[128 16 32 64 32]" 0.41 $ s "jungbass:19" # gain 1.2 ,
+    s "[swbd:1 swsn:0 swbd:1 [swsn:1 <swsn:0 [~ swsn:1*2?]>]]/2" # orbit 3 # room 0.25,
+    slow 4 $ jux(shuffle 16)$ chop 16 $ s "drums" # gain 1.25,
+    slow 2 $ s "hh*2 hh*4 hh*2 hh:4",
+    n (d $ "[0 1 [ ~ 3 ~ 4]]/4"+"14 21"+p) # s "[rash,pulse]" # delay 0.6 # delayt "<0.125 0.25 0.5>" #delayfb 0.75 # gain 0.9 # orbit 1,
+    ((iter 4 $"0 0.125 0.25") ~> ) $ n (iter 2 $"1*2 2*4") # s "feel",
+    s "~"
+    ]
+
+
+
+
+-- slow and sexy
+do
+  let d = toScale (Sound.Tidal.Scales.aeolian)
+  let p = (  "[0 2 4 3 0 2 1 6]/16")
+  let m c = sound "midi" # midichan c
+  d1 $ stack[
+    whenmod 16 15 (const $ s "swsn:0*16" |=| speed (scale 2 1 $slow 2 $ saw)# orbit 3 # room 0.25) $ jux (#speed (scale 0.5 0.98 $ slow 3.3 $tri)) $ s "[swbd:0 swbd:0/2 ~!2] <swsn:0 swsn:3(7,8)? swsn:0 [feel:3 feel:4]>]" # orbit 3 # room 0.25,
+   note (d $ "0/2"+"[0,2,4,<6 8 7>]" + p) # m "[3,2]",
+   whenmod 16 4 (#note "~") $ note (d $ degrade $ "0*8"+(irand 20) + p) # m "[5]",
+    --note (d $  (stut' 3 0.125 (+"3")) $ "[0 2 4 <6 7 8 10>]"+p) # m "[4]",
+    slow "<4 1 8>" $ striate' "<32 16 64 32>" 0.1 $ (#n (irand 8)) $ s "<porn2 chant>" # gain "<0.95 1.2>" # shape "<0.2 0.35>" # pan (slow 4.3 $ sine),
+    cc 3 3 1,
+    s "~"
+    ]
+
+do
+  let d = toScale (Sound.Tidal.Scales.aeolian)
+  let p = ("[0 1 2 3 [7 0] [6 1] 5 [2 3]]/16")
+  let m c = sound "midi" # midichan c
+  d1 $ stack[
+    every 4 (fast 2).(shuffle 4) $ s "[swbd:0 swsn:0]" # orbit 3 # room 0.25,
+    note (d $ "[<0 0(<3 5>,8)>]"+"[0,2,4,<6 8 7>]" + p) # m "[3]",
+    note (d $ whenmod 8 4 (+"~") $ degradeBy 0.3 $ off 0.125 (+7) $ "{0 7 0 ~}%8"+p) # m "[5]",
+    note (d $ (every 4 (superimpose (+4) )$ "{{0 [7 <10 11>] ~ [7 14] 7}%16/16}%4")+p-7) # m "[0]",
+    up "[0 [~!3 3]]/4" # s "jungbass:3",
+    every 3 (superimpose (#speed 1.5))$ n "1 2!3 " # s " feel" # lpf (scale 10000 4000 $ slow 4.3 $ sine)#lpq (scale 0.01 0.3 $ slow 2.3 tri),
+    s "~"
+    ]
+
+do
+  let d = toScale (Sound.Tidal.Scales.aeolian)
+  let p = ("[0 1 2 3 [7 0] [6 1] 5 [2 3]]/16")
+  let m c = sound "midi" # midichan c
+  let cc ch num p = control (scale 0 127 $ p) # sound "midi" # midichan ch # midicmd "control" # ctlNum num 
+  d1 $ stack[
+    s "[swbd:0 swsn:0]" # orbit 3 # room 0.25,
+    note (d $ "[<0 0(<3 5>,8)>]"+"[0,2,4,<6 8 7>]" + p) # m "[3]",
+    note (d $ whenmod 8 0 (+"~") $ off 0.125 (+2) $ off 0.25 (+4) $ "7*4"+p) # m "4",
+    cc 3 74 (slow 4 $ sine),
+    cc 3 71 0,
+    s "~"
+    ] 
+
+
+-- SUper low2 and dark
+do
+  let d = toScale (Sound.Tidal.Scales.aeolian)
+  let p = (  "[0 -1 -2 -1]/8")
+  let p2 = (  "[0 2 0 3]/8")
+  let cc ch num p = control (scale 0 127 $ p) # sound "midi" # midichan ch # midicmd "control" # ctlNum num 
+  let m c = sound "midi" # midichan c
+  d1 $ stack[
+    slow 4 $ striate' "[128 16 32 64 32]" 0.41 $ s "jungbass:19" # gain 1.2 ,
+    s "[swbd:1 swsn:0 swbd:1 [swsn:1 <swsn:0 [~ swsn:1*2?]>]]/2" # orbit 3 # room 0.25,
+    slow 2 $ s "hh*2 hh*4 hh*2 hh:4",
+    n (d $ "[0*4]"+"14 21"+p) # s "[rash,pulse]" # delay 0.6 # delayt "<0.125 0.25 0.5>" #delayfb 0.75 # gain 0.9 # orbit 1,
+    ((iter 4 $"0 0.125 0.25") ~> ) $ n (iter 2 $"1*2 2*4") # s "feel",
+    note (d $ "<0 0*2 [7 0] 0(3,8)>"+"[0,2,4,6]"+p+7) # m "[2,3]" # sustain 0.21,
+    cc "[2,3]" 74 0.65,
+    s "~"
+    ]
+
+
+
+
+
+

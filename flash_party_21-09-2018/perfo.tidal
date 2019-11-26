@@ -1,0 +1,14 @@
+let d = toScale (Sound.Tidal.Scales.aeolian)
+    m c = sound "midi" # midichan c
+    cc ch num p = control (scale 0 127 $ p) # sound "midi" # midichan ch # midicmd "control" # ctlNum num
+
+do
+  let p = ("[0 0 -1 -2 0 0 1 2]/16")
+      dilei a t f = delay a # delayt t # delayfb f
+  d1 $ stack [
+    --n "<1 2>*8" # s "feel" # lpf (slow 4.4 $ scale 600 4000 $ tri) # lpq 0.051,
+    --jux (# speed (scale (-0.5) 1 $ slow 3.2 $ tri)) $ whenmod 16 14 (const $ s "swsn:1*6" # speed (scale 2 1 $ slow 2 $ sine) # orbit 3 # room 0.2) $ s "[swbd:3 <swsn:3 swsn:3 swsn:1 [swsn:3 swsn:3]>]" # orbit 3 # room 0.2 # dilei 0.25 0.25 0.5,
+    --n (d $ "{0 0 7 0 7}%4"+p) # s "bass8"# gain 0.95,
+    note (d $ (every 3 (const $ "[0,7](3,8)") $ every 4 (const $ "0*8") $ "0*2") + "[0,2,4,6]"+7+p) # m "[2,3]" # sustain 0.25 # gain 0.7,
+    --note (d $ slow "<1 2>" $ "0 .. 3"+"<0 1 2>"+p) # m "6" # gain 0.9 # sustain 0.5,
+    s "~"]

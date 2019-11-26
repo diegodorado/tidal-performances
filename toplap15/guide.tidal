@@ -1,0 +1,157 @@
+
+
+808 (6) 808bd (25) 808cy (25) 808hc (5) 808ht (5) 808lc (5) 808lt (5) 808mc (5) 808mt (5) 808oh (5) 808sd (25) 909 (1) ab (12) ade (10) ades2 (9) ades3 (7) ades4 (6) alex (2) alphabet (26) amencutup (32) armora (7) arp (2) arpy (11) auto (11) baa (7) baa2 (7) bass (4) bass0 (3) bass1 (30) bass2 (5) bass3 (11) bassdm (24) bassfoo (3) battles (2) bd (24) bend (4) bev (2) bin (2) birds (10) birds3 (19) bleep (13) blip (2) blue (2) bottle (13) breaks125 (2) breaks152 (1) breaks157 (1) breaks165 (1) breath (1) bubble (8) can (14) casio (3) cb (1) cc (6) chin (4) chink (1) circus (3) clak (2) click (4) clubkick (5) co (4) control (2) cosmicg (15) cp (2) cr (6) crow (4) d (4) db (13) diphone (38) diphone2 (12) dist (16) dork2 (4) dorkbot (2) dr (42) dr2 (6) dr55 (4) dr_few (8) drum (6) drumtraks (13) e (8) east (9) electro1 (13) erk (1) f (1) feel (7) feelfx (8) fest (1) fire (1) flick (17) fm (17) foo (27) future (17) gab (10) gabba (4) gabbaloud (4) gabbalouder (4) glasstap (3) glitch (8) glitch2 (8) gretsch (24) h (7) hand (17) hardcore (12) hardkick (6) haw (6) hc (6) hh (13) hh27 (13) hit (6) hmm (1) ho (6) hoover (6) house (8) ht (16) if (5) ifdrums (3) incoming (8) industrial (32) insect (3) invaders (18) jazz (8) jungbass (20) jungle (13) jvbass (13) kicklinn (1) koy (2) kurt (7) latibro (8) led (1) less (4) lighter (33) linnhats (6) lt (16) made (7) made2 (1) mash (2) mash2 (4) metal (10) miniyeah (4) moan (1) monsterb (6) moog (7) mouth (15) mp3 (4) msg (9) mt (16) mute (28) newnotes (15) noise (1) noise2 (8) notes (15) numbers (9) oc (4) odx (15) off (1) outdoor (6) pad (3) padlong (1) pebbles (1) perc (6) peri (15) pluck (17) popkick (10) print (11) proc (2) procshort (8) psr (30) rave (8) rave2 (4) ravemono (2) realclaps (4) reverbkick (1) rm (2) rs (1) sax (22) sd (2) seawolf (3) sequential (8) sf (18) sheffield (1) short (5) sid (12) sine (6) sitar (8) sn (52) space (18) speakspell (12) speech (7) speechless (10) speedupdown (9) stab (23) stomp (10) subroc3d (11) sugar (2) sundance (6) tabla (26) tabla2 (46) tablex (3) tacscan (22) tech (13) techno (7) tink (5) tok (4) toys (13) trump (11) ul (10) ulgab (5) uxay (3) v (6) voodoo (5) wind (10) wobble (1) world (3) xmas (1) yeah (31)
+... file reading complete. Required 432 MB of memory.
+
+
+loading
+
+d6 $ silence
+
+
+
+
+
+
+
+
+
+
+
+
+
+do  -- i <3 perlin
+  d1 $ s "rhodes"
+     # note (range 0 24 $ perlinWith (0))
+
+
+
+-- happy (3,8,<0 1 2 0>)
+
+do
+  let bp = "[-2 -2 -1 [0 7]]/16"
+      d = scale "lydian"
+  d1 $ stack [
+    whenmod 16 16 (const $ s "✊*12" #speed (slow 2 $ isaw*2+1)) $ s "[💜<✊[👊*2 ~]>]" # orbit 3 # room 0.2,
+    note (d $ every 3 (off 0.25 (+"[0,7]")) ( (sometimes (fast "<2 4>" ) $ (irand 4)+"[0 2 4 6]")+bp)) # s "<supersquare ~>" # gain 0.8 # orbit 2 #dilei 0.5 0.125 0.6,
+    note (d $ "[0,4,6,8](3,8,<0 1 2 0>)"+"[0,7]"+bp) # midi "[2,3]" #gain 0.9,
+    note (d $ stut' 3 0.25 (+"[0 2 4]") $ "7"+bp) # midi 4 # gain 0.9,
+    s "feel:2(5,8,<10 1 0 0 2>)" # gain 1.2 #lpq 0.15 # lpf (range 3000 300 $ slow 4.4 $ tri) ,
+    note (d $ "{0 7 ~ ~}%4"-7+bp) # midi "[0,1]" # gain 0.6,
+    s "~"]
+
+
+
+
+
+do
+  let b ="[0 1 2 [3 4 -1 4]]/8"
+      d = scale "lydian"
+  d1 $ stack[
+    spread ($) [fast 1, brak, rev, slow 2] $ s "bd hh sn:3 feel:1 " ,
+    s "~ 💪" # gain 1 # orbit 3,
+    jux (#speed ("0.48*8"+(slow 4 $ sine*0.4)))$ n "{0 .. 0}%8" # s "[dr]",
+    -- foldEvery [2,3] ((|+| crush 8 ).(|*|lpf 0.7 )) $ note (d $ every 3 (+"[0]") $ sometimes (stut' 3 0.125 (+"[4 8]")) $ "[0 1 3 4](<3 5>,8,<1 2>)"+"[0]"+b) # s "superpiano" # gain 0.85 # dilei 0.5 0.5 0.5 # orbit 2 #lpf 4000 # lpq 0.1,
+    -- n (d $ "{0 0 5 0 ~ 0 5}%4"+b) # s "bass8" # shape 0.3 # sustain 0.23 # gain 0.95,
+    -- note (d $ stut' 3 "<0.125 0.25 >" (+"[0]") $ "[0 2 0 0]/2" ) # midi "[4]" # sustain 0.0122,
+    -- note (d $ (foldEvery [3,4] (const $ "<0 7>(<5 7 7>,8,<1 2 0>)"+((irand 8)*"<0 1>")) $"0(3,8,<0 1>)")+b-7 ) # midi "[0]" # gain 1.2 # sustain 0.07,
+    note (d $ (foldEvery [3,4] (const $ "<0 7>(<5 7 7>,8,<1 2 0>)"+((irand 8)*"<0 1>")) $"0(3,8,<0 1>)")+b-7 ) # midi "[0]" # gain 1.2 # sustain 0.107,
+    note (d $ (fast "<4 2 3>" $ "<0*4 7*4>")+(irand 8)+"<0 ~ ~ ~>"+b ) # midi "<4>" # gain 0.8,
+    note (d $ every 4 (const $ "5")$ "[[~ 0 0 0 0 [~ 1] ~ 2] ~]/4"+"[0,2,4]" ) # midi "<2,3>" # gain 0.7 # sustain 0.5,
+    s "~"]
+
+
+
+
+do
+  let b ="[-2 -1 0 0]/16"
+      d = scale "minPent"
+  d1 $ stack[
+    whenmod  16 16 (const $ s "✊*6" #speed(slow 2 $ isaw+1)# orbit 3) $ s "[💚 <✊ [👊*2 ~]>]" # gain 1.1 # orbit 3 # room 0.2,   --  Jesús
+    -- note (d $ every 4 (const $ "[0 7](7,8)?"-7) $ "{0 7 ~ 0 [6 7]}%4"-7+b) # s "midi" # sus 0.12,
+    -- note (d $ (timeLoop 4 $ "{0 7 ~ 0 [6 7]}%4"-7)+b) # s "midi" # sus 0.12,
+    -- note (d $ "[0,2,4,<6 7 8>,10]"+b) # s "midi" # midichan "[2,6]" ,
+    note (d $ "[0*2 0*2?]*2"+(irand 5)+7) # s "<midi ~ ~ ~>" # midichan "[5]" # sus 0.15,
+    control (range 60 80 $ slow 4 $ tri) # s "midi" # ctlNum 71 # midicmd "control",
+    control (range 60 80 $ slow 5.5 $ tri) # s "midi" # ctlNum 74 # midicmd "control",
+    -- s "{🛅🦍🦄🎇🎇}%8" # speed (slow 4 $ sine+1),   --  Diego
+    note (d $ round <$> (fast 2 $ "<[7] 0*2 0*4>"|+(slow 4 sine*3+rand*4))) # s "sax" # shape 0.2  # dilei 0.4 "1 0.25 0.5" 0.8 # begin (0.25+(slow 4 $ sine*0.3)) # coarse "<2 1>" # cut 1 # orbit 2 # gain 1.1 + note 3,
+    s "~"]
+
+
+
+do
+  let d = scale "lydian"
+      b = "[-2 -1 0 0]/4"
+  d1 $ stack[
+    s "💙(<1 <3 5>>,8,<0 -1>)" # orbit 3 # gain  1.08,
+    note (d $ "0(3,8)"+b) # s "bass8" # gain 1.1 # shape 0.4,
+    s "~"]
+
+
+-- rand supersquare
+
+do
+  let d = scale "lydian"
+      b = "[-2 [-1 3] 0 0]/4"+"[-3 0]/16"
+  d1 $ stack[
+    slow 4 $ shuffle 32 $ striate 32 $ s "drums" # gain 1.35 # shape 0.4 # hpf 300 # speed 1.5 ,
+    note (d $ (round <$> ((slow 4 $ sine*10)+rand*5+|"0*<1>"))+b) # s "sax" # begin 0.5 # gain 1.152 # shape 0.35  # cut 2 + note 3 # dilei 0.6 0.25 0.4 # orbit 2 # coarse "[0 .. 12 2 .. 0]/4",
+    -- within (0,0.5) degrade $ note (d $ (round <$> ((slow 4 $ sine*7)+rand*4+|"0*<4 8>"))+b) # s "sax" # begin (slow 4 $ 0.25+sine*0.13) # gain 1.2 # shape 0.45  # cut 2 + note 3 # dilei 0.6 0.25 0.4 # orbit 2 # coarse (slow 4.3 $ "0 .. 8 10 .. 0" ),
+    stack[
+      note (d $ (round <$> ((slow 8 $ sine*10)+rand*4+|"0(<4>,16)"))+b) # s "😭" # begin 0.25 # end 0.4 # gain 1.2 # shape 0.4  # cut 5 + note "-5" # coarse 0,
+      note (d $ (round <$> ((slow 4 $ sine*10)+rand*0+|"0(<1 3 5 7>,8,<0>)"))+b) # s "😭" # begin 0.3 # end 0.6 # gain 1.2 # shape 0.45  # cut 3 + note "-5" # coarse 4] # orbit 2 # dilei 0.8 "<0.5 0.25>" 0.8 # gain 0,
+    s "[💙*2]" # orbit 3 # gain  1.08,
+    -- s "[💙<✊[👊*2 ~]>]" # orbit 0 # gain  1.08,
+    s "💙(<1 <3 5>>,8,<0 -1>)" # orbit 0 # gain  1.08,
+    -- note (d $ ((run 8) + "[0 2 4 6]")+b) # s "supersquare" # gain 0.9 #orbit 2 # dilei 0.5 0.25 0.6,
+    -- note (d $ (fast (choose([1])) $ (irand 4) + "[0 2 4 6]"+6)+b) # s "supersquare" # gain 0.9 #orbit 2 # dilei 0.5 0.25 0.6 +accelerate 0.02,
+    -- note (d $ ("[0 2 4 6]"+2)+b) # s "supersquare" # gain 0.6 #orbit 2 # dilei 0.65 0.25 0.5,
+    note (d $ off 0.125 (+2) $ (fast (choose([1])) $ (irand 8) + "[0 2 4 6]"+2)+b) # s "supersquare" # gain 1 #orbit 2 # sus (smooth "0.04 0.15 0.01 0.11") # dilei 0.65 0.25 0.68 |+ accelerate (slow 8 $ smooth "0 0 0.01 2 0 0 0 0"),
+    -- within (0.5 ,1) (stut' "<3 2>" "[0.25 0.5 1]/5" ((+note 12).(#crush (range 2 6 $ slow 4 $ tri)).(#orbit 2).(# dilei 0.5 "<0.25 0.5>" "<0.2 0.8 0.1>"))) $ note (d $ "0(3,8)"+b) # s "bass8" # gain 1.01 # shape 0.3,
+    -- s "<✋👈>(<5 3>,8,<10 1 0>)" # z_order 1,
+    -- note (d $ every 4 (0.25 ~> ) $ off 0.25 (+7) $ "[0,4,6,8]"|+b) # midi "[2,3]" # sus 0.2 # gain 0.65,
+    -- note (d $ "[0 7 <~ [10 7]> <7 [7 10]>]"|+b-7) # midi "[0]"  # gain 1.2,
+    note (d $ "[0 7 ~ 7]"|+b-7) # midi "[0]"  # gain 1.2,
+    s "~"]
+
+
+
+
+
+-- nice piano slow
+
+do
+  let b ="[0 1 2 [3 4 -1 4]]/8"
+      d = scale "lydian"
+  d1 $ stack[
+    s "[💗 sd]/2" ,
+    fast 2 $ s "~ 💪" # gain 1 # orbit 3,
+    jux (#speed ("0.8*8"+(slow 4 $ sine*0.4)))$ n "{0*2}%4" # s "[dr]",
+    slow 2 $ foldEvery [2,3] ((|+| crush 8 ).(|*|lpf 0.7 )) $ note (d $ every 3 (+"[0]") $ sometimes (stut' 3 0.125 (+"[4 8]")) $ "[0 1 3 4](<3 5>,8,<1 2>)"+"[0]"+b) # s "superpiano" # gain 0.85 # dilei 0.5 0.5 0.5 # orbit 2 #lpf 4000 # lpq 0.1,
+    n (d $ "{0 0 [7 0] ~ 0 [6 7]}%4"+b) # s "bass8" # shape 0.3 # sustain 0.23 # gain 1.05,
+    -- note (d $ stut' 2 "<0.125>" (+"[7 [8 7]]") $ "0*4"+b-7 ) # m "[0]" # sus 0.125,
+    note (d $ (foldEvery [3,4] (const $ "<0 7>(<5 7 7>,8,<1 2 0>)"+((irand 8)*"<0 1>")) $"0(3,8,<0 1>)")+b-7 ) # midi "[0]" # gain 1.2 # sustain 0.07,
+    -- note (d $ (fast "<4 2 3>" $ "<0*4 7*4>")+(irand 8)+"<0 ~ ~ ~>"+b ) # m "<4>" # gain 0.9,
+    note (d $  "[[0 0 [~ 1] [~ 0]] ~]/2"+"[0,2,4]"+b ) # midi "<2,3>" # gain 0.7 # sustain 0.5,
+    s "~"]
+
+
+-- coarse trumpet!
+
+do
+  let d = scale "aeolian"
+      b = "[-2 -1 0 0]/4"
+  d1 $ stack[
+    s "[swbd*2]" # orbit 3 # gain  1.1 ,
+    -- s "[💙*2 💙*2?] <✊ 💪*2>" # orbit 0 # gain  1.08,
+    -- s "👈(<5 3 7>,8,<0 1 10>)" # pan (slow 2.3 $ sine),
+    -- slow 4 $ shuffle 32 $ striate 32 $ s "drums" # gain 1.45 # shape 0.4 # hpf 0 ,
+    -- within (0,0.5) degrade $ note (d $ (round <$> ((slow 4 $ sine*7)+rand*4+|"0*<4 8>"))+b) # s "sax" # begin (slow 4 $ 0.25+sine*0.13) # gain 1.2 # shape 0.45  # cut 2 + note 3 # dilei 0.6 0.25 0.4 # orbit 2 # coarse (slow 4.3 $ "0 .. 8 10 .. 0" ),
+    -- stack[
+      -- note (d $ (round <$> ((slow 8 $ sine*10)+rand*4+|"0(<8>,16)"))+b) # s "chant" # begin 0.3 # end 0.35 # gain 1.2 # shape 0.4  # cut 5 + note "-5" # coarse 5,
+      -- note (d $ (round <$> ((slow 4 $ sine*10)+rand*0+|"0(<1 3 5 7>,8,<0>)"))+b) # s "😫" # begin 0.3 # end 0.6 # gain 1.2 # shape 0.45  # cut 3 + note "-5" # coarse 4] # orbit 2 # dilei 0.8 "<0.5 0.25>" 0.8,
+    -- note (d $ "[0 7 ~ ~]"|+b-7) # midi "[0]"  # gain 1.3,
+    note (d $ "[0 7 <~ [10 7]> <7 [7 10]>]"|+b-7) # midi "[0]"  # gain 1.2,
+    -- note (d $ "[0*2]"|+b+7) # midi "[5]"  # gain 1.2,
+    s "~"]

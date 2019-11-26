@@ -1,0 +1,316 @@
+
+
+let base = "[0 1 2 3]/8"
+
+kill
+
+hush
+
+setcps 0.6
+
+hush
+
+
+d5 silence
+
+
+d3 $ s "swbd*32?" # box (irand 10) # move 0 10 10 # pos 0 2 2  # rigid 0 # size (slow 4 $ sine*10) # duration 1 # gain 0.9 # cps ( slow 4 $ 10) 
+
+unsolo 1
+
+d1 silence
+
+d1 $ fast 2 $  n "[0(<3 3 3 7>,8), [1 2*<4 2>],[~ <3 4>]]" #  s "feel" # room 0.2 # size 2 # orbit 8
+
+hush
+
+d2 $ ns (every 2 (stut' 3 0.125 (# gain 0.7)) $ "[0]"+"[0 2]/4") #  s "cello:0" # begin 0.125 # shape 0.4 # coarse 0 # dilei 0.5 0.25 0.6 # sus 0.5
+
+d3 $ ns ("0(<11 14?>,16)"+"-7"+"[0 2]/4") # midi 0 # sus 0.25
+
+
+d4 $ ns ("[0,2,4,6,8,10]"+"7"+"[0 2]/4") # gain 1.2 # midi 1
+
+
+
+
+d6 $ ns (off 0.5 (+ irand 4) $ degrade $ "[0 .. 15]"-7+"[0 1]/4") # sus 0.03 # midi 2
+
+d5 $ slow 2 $ every 4 (shuffle 32) $  striate 32 $  s "drums" # shape 0.4
+
+d3 silence
+
+d6 $ superimpose ((#cut 4).(# s "tromb:2" ).(#gain 1.025)) $ ns ("[0(11,16,<0 2>)]"+ "[0 2 4 [ 6 7]]/2"-2) # begin (0.25+sine*0.1) # shape 0.4 # s "tuvan:1" # cut 3 # coarse "0 <10 120> 30"
+
+d6 silence
+
+mute 
+
+
+
+
+
+
+
+
+d4 silence
+
+d1 $ stack[
+ every 2 (0.125~>) $ s "chant" # n (choose([1,4])) # shape 0.5 # speed ("<1 0.75>"),
+ sometimesBy 0.1 (# moveZ 100) $ s "[<swbd [swbd*2 ~]> <swsn:3 swsn:3(7,8)?>]" # box (slow 2 $ run 4)  # move 1 10 10 # pos (slow 4 $ 5 - sine*10) 5 1 # size "[8 4!3]/2" # duration 3 ,
+ s "[feel*<4 8>]" # n "[<1 2>]*5" # plane 1 1 1 ,
+ ns ("[0,2,4,6,12]"+base ) # midi 1,
+ degradeBy 0.5 $ ns (round <$> (segment "<4 8 16>" $ slow 2 $ perlin*8 -4 )  ) # sus 0.4 # midi 2,
+ ns ( "{0 ~ [0 7] [<2 3> <0 0*4>]}%4" +base- 7+"[<0 ~> <7 0>]") # midi 0,
+ s "~"]
+
+
+
+
+
+
+
+
+
+
+
+let ns p = note (scale "lydian" p)
+
+let kill = (asap $ s"bd" # orbit "[0,1,2,3]" # room 0 # gain 0)
+
+setcps 0.5
+
+hush
+
+
+kill
+
+
+
+d1 $ box ("0*<4 4 8 16>" +irand 20) # s "swbd" # gain 1
+  # x (slow 4 $ run 8)
+  # y (slow 6 $ 1+ run 8)
+  # z (slow 6 $ run 8)
+  # size 1 # cut 1 # rigid 1 # duration 20 
+
+d2 $ off 0.25 ((|+| box "[0,1,2,3]").(#box 2).(#screen 2)) $ s "feel:1(<3 5>,8,<0 2 0>)"
+  # x ((-6+run 12)*2)
+  # y 3
+  # z (-3)
+  # size 1.4
+  # box (run 1)
+  # duration 3
+  # rigid 1
+  # dilei 0.5 0.25 0.46
+  # orbit 2
+  # screen 1 # lpf 6000 # cut 10
+
+hush
+
+
+
+d3 $ s "~ <swsn <swsn:3 swsn:3(7,8)?>>"
+  # x (slow 4 $ -4 + run 8)
+  # y (slow 6 $ 1+ run 8)
+  # z (slow 6 $ run 8)
+  # size "<5 0 1 0>/2.2"
+  # duration 5
+  # rigid 1
+  # room 0.3
+  # speed 1.25
+  # orbit 3
+  # box 0
+
+d4 $ stack[
+  note (scale "lydian" $ every 3 (off "<0.125 0.25>" (+7)) $ "[-7(<3 1>,8,<0 2>)]"+"[0 1]/8") # midi 0 # legato 1.8 # duration 0.2 # y 2 # box 2 # duration 4 # move 0 20 10 # x (5-irand 10) # rigid 1,
+  note (scale "lydian" $ "[0,2,4,6,<8 9 10>,19]/4"+"[0 1]/8") # midi 1 ,
+  note (scale "lydian" $ off 0.125 (+"[7 8 ~ ~]") $ "-7*4"+ (irand 8)+"[~!3 0]/4") # midi 2 # gain 0.4
+]
+
+d4 $ stack[
+  note (scale "lydian" $ every 3 (off "<0.125 0.25>" (+7)) $ "[-7(<3 1 5>,8,<0 2>)]"+"[0 1]/8") # midi 0 # legato 1.8 # duration 0.2 # y 2 # move 0 0.2 0.2 # x (irand 5),
+  ns ( "[0,2,4,6,<8 9 10>,19]/4"+"[0 1]/8") # midi 1 ,
+  ns ( round <$> (segment "<8 2 16 4>" $ "-7*4"+ (slow "<4 0.5>" $ perlin*2 + rand*2)+"[2]/4")) # midi 2 # gain 0.4
+]
+
+unsolo 4
+
+d4 $ stack[
+  ns ( every 3 (off "<0.125 0.25>" (+7)) $ "[-7(<3 1>,8,<0 2>)]"+"[0 1 [2 3 4 5]]/8") # midi 0 # legato 1.8 # duration 0.2 # y 2 # move 0 0.2 0.2 # x (irand 5),
+  ns ( "[0,2,4,6,<8 9 10>,19]/4"+"[0 1 [2 3 4 5]]/8") # midi 1 ,
+  ns ( round <$> (segment "<1 <2 3> 4 <16 12 16>>" $ (slow "<4 0.5 8>" $ perlin*11 + rand*2)+"[-7]/4")) # midi 2 # gain 0.4 
+]
+
+
+d4 $ stack[
+  ns ( "[-7(<3 1>,8,<0 2>)]"+"[0 1]/8") # midi 0 # legato 1.8 # duration 0.2 # y 2 # move 0 0.2 0.2 # x (irand 5),
+  ns ( "[0,2,4,6,<8 9 10>,19]/4"+"[0 1]/8") # midi 1 ,
+  ns ("[0]" ) # s "cello" # cut 11 # begin 0.25,
+  ns ( round <$> (segment "<1 <2 3> 4 <16 12 16>>" $ (slow "<4 0.5 8>" $ perlin*11 + rand*2)+"[-7]/4")) # midi 2 # gain 0.4 
+]
+
+solo 4
+
+kill
+
+
+d7 $  s "sd*4" # gain 0 # plane (sine*3) 1 0 # move 0 0 1
+
+solo 4
+
+d4 $ stack[
+  slow 2 $ stack[
+   ns ("[-5 -3 -1 [0 2*2]]/4"+2) # s "cello:2" # cut 4,  
+   ns ("[-5 -3 -1 [0 2*2]]/4"+4) # s "cello:2" # cut 5 
+  ] # orbit 2  # dilei 0.5 0.25 0.6 ,
+  ns ("{0 -7 ~ [7 0] 0}%8"+"[-3 -2 -1 [0 2]]/8") # s "bass8" # cut 3 # gain 1.0 # sus "[0.2!4 0.1 0.4]/4" # shape 0.54 # coarse "<0 0 30> 0 <25 0> 15",
+  ns ( "[0,2,4,6,<8 9 10>]/4"+"[0 1]/8"+7) # midi 1 ,
+  ns ( off 0.125 (+"[2 4]") $ "[0 2]*4 ~"+ (irand 4)+"[2 0]/4") # midi 2 # gain 1 # sus 0.4,
+  s "sd*16" # duration 5 # screen "<1 2>" # gain 0 # box (irand 10) # pos (5 - irand 10) 5 5 # rigid 1 # size (rand*10)
+]
+
+
+
+
+d4 $ stack[
+  slow 2 $ stack[
+   (# pos (slow 2 $ 7-sine*14) (5+sine*3) 0) $   striate' "[32 16]" 0.15 $ note "[-5 -3 -1 <0 2>]/4" # s "[chant:1,chant:4]" # shape 0.5 # gain 1.0 # box (irand 14) # rigid 1  # size 0.24 , 
+   ns ( "[-5 -3 -1 [0 2*2]]/4"+2) # s "cello:2" # cut 4, 
+   note "[-5 -3 -1 [0 2*2]]/4" # s "cello:2" # cut 3] # orbit 2  # dilei 0.5 0.25 0.6 ,
+  ns ( every 6 (off "<0.125 0.25>" (+7))  $ "[-7(<3 1>,8,<0 2>)]"+"[0 1]/8") # midi 0 # duration 2 # y 2 # move 0 0.42 0.72 # rigid 1 # x (irand 5) #sus 2,
+  ns ( "[0,2,4,6,<8 9 10>]/4"+"[0 1]/8"+7) # midi 1 ,
+  ns ( off 0.125 (+"[0 1]") $ "[0 2] ~"+ (irand 4)+"[-7]/4") # midi 2 # gain 1 # sus 0.4
+]
+
+d5 silence
+
+d1 $ box ("0*<4 4 4 [4 8 16 32]>"+irand 20) # s "swbd" # gain 1.15
+  # x (slow 1 $ 2*run 8)
+  # y (slow 6 $ 1+ run 8)
+  # z (slow 6 $ run 8)
+  # size 4 # rigid 1
+
+
+
+d2 $ s "feel:1(<3 5 7>,8,<0 1 2 0>)"
+  # x ((-6+run 12)*2)
+  # y 5
+  # z (-3)
+  # size 4
+  # box (irand 10)
+  # duration 2
+  # rigid 1
+  # dilei 0.5 0.25 0.6
+  # orbit 2 # cut 6
+
+d3 $ fast 2 $ s "~ <[swsn swsn*2?] <swsn:3 swsn:3*2>>"
+  # x (slow 4 $ -4 + run 8)
+  # y (slow 6 $ 1+ run 8)
+  # z (slow 6 $ run 8)
+  # size "<5 0 1 0>/2.2"
+  # duration 5
+  # rigid 1
+  # box (irand 15)
+  # room 0.3
+  # speed 1.25
+  # orbit 3
+
+d4 silence
+
+kill
+
+solo 4
+
+d4 $ stack[
+  slow 2 $ stack[
+   striate' "[8 4]" 0.4 $ ns ("[-5 -3 -1 <0 2>]/4"+"<0 2>") # s "[chant:1,chant:4]" # shape 0.5 # gain 0.985 # dilei 0.5 0.25 0.6 # box 0 #pos 0 5 5 # size 8 # rigid 1 #  , 
+   ns ( "[-5 -3 -1 [0 2*2]]/4"+2) # begin 0.25 # gain 1.15 # shape 0.3 # s "cello:1" # cut 4, 
+   note "[-5 -3 -1 [0 2*2]]/4" # s "cello:2" # cut 3] # orbit 2  # dilei 0.5 0.25 0.6 ,
+  ns( every 6 (off "<0.125 0.25>" (+7))  $ "[-7(<3 1>,8,<0 2>)]"+"[0 1]/8") # midi 0 # duration 2 # y 2 # move 0 0.42 0.72 # rigid 1 # x (irand 5) #sus 2,
+  --note (scale "lydian" $ "[0,2,4,6,<8 9 10>]/4"+"[0 1]/8"+7) # midi 1 ,
+  note (scale "lydian" $ stut' 3 0.125 (+"[2]") $ "[0] ~"+ (irand 4)+"[-7]/4"+4) # midi 2 # gain 1 # sus 0.4
+]
+
+
+
+
+unsolo 4
+
+
+solo 4
+
+d4 $ stack[
+  --slow 2 $ stack[
+   --striate' "[16 32]" "0.15" $ note "[<-5 2> -3 -1 <0 2>]/4" # s "[tromb:2]" # shape 0.5 # gain 0.85 # dilei 0.8 0.25 0.8 # cut 7, 
+   --ns ( "[0 2]*<8 16 32>"+ "[-5 -3 -1 [0 2*2]]/4"+4) # s "cello:3" # cut 6 # begin 0.4 # end 0.6 #att 0.01,   ns ( "[0 2]*8"+ "[-5 -3 -1 [0 2*2]]/4"+2) # s "cello:3" # cut 4 # begin 0.3 # shape 0.3, 
+   --ns "[-5 -3 -1 [0 2*2]]/4" # s "cello:2" # cut 3] # orbit 2  # dilei 0.5 0.25 0.6 ,
+  ns( "{0 [<6 8> 7] ~ [0*2 <7 [10 14]>] ~ 7}%8"+"[0 1]/8"-7) # midi 0 # duration 2 # y 2 # move 0 0.42 0.72 # rigid 1 # x (irand 5) #sus 0.4,
+  ns ( "[0,2,4,6,<8 9 10>]/4"+"[0 1]/8"+7) # midi 1 # gain 1.15 ,
+  --ns ( stut' 4 0.05 (+0) $ round <$> (segment "<4 12>"  $ slow 2 $ perlin*14 + "[-7]/4"-2)) # midi 2 # gain 1 # sus 0.025,
+ s "~"]
+
+
+d4 silence
+
+solo 4 -- and 3 
+
+hush
+
+d2 $ fast 2 $ s "[feel:0(<3 1 7?>,8,<0 1 2 0>), fm:11/2]"
+  # x ((-6+run 12)*2)
+  # y 5
+  # z (-3)
+  # size 4
+  # box (irand 10)
+  # duration 2
+  # rigid 1
+  # dilei 0.7 0.25 0.79
+  # orbit 2
+  # lpf 6000
+  --# n (irand 8)
+  # coarse "<0 10 20>"
+
+hush
+
+solo 2
+
+
+
+d5 $ jux (#speed (-0.25)) $ slow 4 $ striate 32 $ s "drums" # gain 1.1 # shape 0.2
+
+d5 silence
+
+d6 $ box "0*32" # pos 0 5 5 # s "sd" # gain 0 # rigid 1 # move 0 10 30 # size 5 
+
+
+d5 $  slow 2 $ spread ($) [scramble 32, shuffle 32,rev,(jux (#speed 1.32))]  $ striate 32 $ s "drums" # gain 1.12 # shape 0.2
+
+solo 3
+
+unsolo 1
+
+d2 silence
+
+mute 6
+
+hush
+
+kill
+
+d6 $ ns ( off 0.25 (+"[2]") $ "0(<9 11 7>,16,<0 1 2>)"+ "[<0 [7]> [3 2]]/4"-2) # shape 0.4 # s "[chant:1]" # begin 0.02  # sus 0.5  # orbit 2 # dilei 0.6 0.125 0.8 # cut 8 # coarse "1 30 60 5" # gain 0.7
+
+solo 6
+
+d6 silence
+
+d6 $ ns (off 0.125 (+"[0]") $ "0(<9 11>,16,<0 1>)"+ "[<0 [7 6 5 2]> [3 2]]/4") # shape 0.24 # s "[tuvan:1]" # begin 0.2 # sus 0.2 # orbit 2 # dilei 0.5 0.125 0.4 # coarse "2" # lpf 700 # lpq 0.051 # cut 5
+
+hush
+
+solo 5
+
+d6 silence
+
+
+
+

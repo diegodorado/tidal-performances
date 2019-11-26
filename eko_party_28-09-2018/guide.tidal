@@ -1,0 +1,151 @@
+let d = toScale (Sound.Tidal.Scales.aeolian)
+    m c = sound "midi" # midichan c
+    cc ch num p = control (scale 0 127 $ p) # sound "midi" # midichan ch # midicmd "control" # ctlNum num
+
+
+d1 $ s "feel:1*8" # cutoff (scale 600 6000 $ slow 4 $ tri) # resonance 0.15
+
+d1 $ stack[
+ s "feel:1*8" # cutoff (scale 600 6000 $ slow 4 $ tri) # resonance 0.15,
+ s "[swbd swsn:3]/4",
+ s "~"]
+
+
+d1 $ stack[
+ s "feel:1*8" # cutoff (scale 600 6000 $ slow 4 $ tri) # resonance 0.15,
+ s "[swbd swsn:3]/4",
+ s "bass8",
+ s "~"]
+
+
+d1 $ stack[
+ s "feel:1*8" # cutoff (scale 600 4000 $ slow 4 $ tri) # resonance 0.15,
+ s "[swbd swsn:3]/4",
+ n "{0 7 0 0 7 }%4" # s "bass8",
+ s "~"]
+
+
+
+d1 $ stack[
+ s "feel:1*8" # cutoff (scale 600 4000 $ slow 4 $ tri) # resonance 0.15,
+ s "[swbd swsn:3]/4",
+ n (d $ "{0 7 0 0 7 }%4") # s "bass8",
+ s "~"]
+
+
+
+d1 $ stack[
+ s "feel:1*8" # cutoff (scale 600 4000 $ slow 4 $ tri) # resonance 0.15,
+ s "[swbd swsn:3]/4",
+ n (d $ "{0 7 0 0 7 }%4" + "[0 0 3 [1 [~ 4]]]/8") # s "bass8",
+ s "~" ]
+
+do
+  let p = "[0 0 3 [1 [~ 4]]]/8"
+  d1 $ stack[
+   s "feel:1*8" # cutoff (scale 600 4000 $ slow 4 $ tri) # resonance 0.15,
+   n (d $ "{0 7 0 0 7 }%4" + p) # s "bass8",
+   s "[swbd swsn:3]/4",
+   note (d $ "[0,2,4]" + p) # m "3",
+   s "~"]
+
+do
+ let p = "[0 0 3 [2 5 [~ 4]]]/8"
+ let d = toScale (Sound.Tidal.Scales.lydian)
+ d1 $ stack[
+  s "feel:1*8" # cutoff (scale 600 4000 $ slow 4 $ tri) # resonance 0.15,
+  n (d $ "{0 7 0 0 7 }%4" + p) # s "bass8",
+  s "[swbd swsn:3]/4",
+  note (d $ "[0,2,4]" + p) # m "3",
+  s "~"]
+
+
+do
+ let p = "[0 0 3 [2 5 [~ 4]]]/8"
+ let d = toScale (Sound.Tidal.Scales.lydian)
+ d1 $ stack[
+  s "feel:1*8" # cutoff (scale 600 4000 $ slow 4 $ tri) # resonance 0.15,
+  n (d $ "{0 7 0 0 7 }%4" + p) # s "bass8",
+  s "[swbd swsn:3]/4",
+  note (d $ "[0,2,4,<6 7 8>]" + p) # m "3",
+  note (d $ "[0*2 <7 8 9 10>*2?]" + p) # m "6",
+  s "~"]
+
+do
+ let p = (0 + "[0 0 3 [2 5 [~ 4]]]/8")
+ let d = toScale (Sound.Tidal.Scales.lydian)
+ d1 $ stack[
+  n  "<1 1 2>*8" # s "feel" # cutoff (scale 600 4000 $ slow 4.3 $ tri) # resonance 0.15,
+  n (d $ "{0 7 0 0 7 }%4" + p) # s "bass8",
+  s "[swbd swsn:3]/2" # orbit 3 # room 0.35,
+  note (d $ "[0,2,4,<6 7 8>]" + p) # m "3",
+  note (d $ "[0*2 <7 8 9 10>*2?]" + p) # m "6",
+  s "~"]
+
+do
+ let p = (0 + "[0 0 3 [2 5 [~ 4]]]/8")
+ let d = toScale (Sound.Tidal.Scales.lydian)
+ d1 $ stack[
+  n  "<1 1 2>*8" # s "feel" # cutoff (scale 600 4000 $ slow 4.3 $ tri) # resonance 0.15,
+  n (d $ "{0 7 0 0 7 }%4" + p) # s "bass8",
+  s "[swbd swsn:3]/2" # orbit 3 # room 0.35,
+  note (d $ "[0,2,4,<6 7 8>]" + p) # m "3",
+  note (d $ "[0 .. 3 7 .. 4]") # m "6",
+  s "~"]
+
+
+
+
+do
+ let p = (0 + "[0 0 3 [2 5 [~ 4]]]/8")
+ let d = toScale (Sound.Tidal.Scales.lydian)
+ d1 $ stack[
+  n  "<1 1 2>*8" # s "feel" # cutoff (scale 600 4000 $ slow 4.3 $ tri) # resonance 0.15,
+  n (d $ "{0 7 0 0 7 }%4" + p) # s "bass8",
+  s "[swbd swsn:3]/2" # orbit 3 # room 0.35,
+  note (d $ "[0,2,4,<6 7 8>]" + p) # m "3",
+  whenmod 16 8 (const $ note "~") $ note (d $ "[0 .. 3 7 .. 4]") # m "6",
+  s "~"]
+
+
+
+do
+ let p = (0 + "[0 0 3 [2 5 [~ 4]]]/8")
+ let d = toScale (Sound.Tidal.Scales.lydian)
+ d1 $ stack[
+  n  "<1 1 2>*8" # s "feel" # cutoff (scale 600 4000 $ slow 4.3 $ tri) # resonance 0.15,
+  n (d $ "{0 7 0 0 7 }%4" + p) # s "bass8",
+  s "[swbd swsn:3]/2" # orbit 3 # room 0.35,
+  note (d $ "[0,2,4,<6 7 8>]" + p) # m "3",
+  whenmod 16 8 (const $ note "~") $ note (d $ "[0 .. 3 7 .. 4]") # m "6",
+  s "~"]
+
+
+
+do
+  let p = (0 + "[0 0 3 [2 5 [~ 4]]]/8")
+  let d = toScale (Sound.Tidal.Scales.lydian)
+  let dilei a t f = delay a # delayt t # delayfb f
+  d1 $ stack[
+    n  "<1 1 2>*8" # s "feel" # cutoff (scale 600 4000 $ slow 4.3 $ tri) # resonance 0.15,
+    n (d $ "{0 7 0 0 7 }%4" + "[0 <0 7 4> 0 <4 7 [4,-3]>]" + p) # s "bass8" # shape 0.45 # gain 1.1,
+    whenmod 16 14 (const $ s "swsn:1*12" # speed (scale 3.4 1 $ slow 2 $ saw)  # orbit 3 # room 0.35) $ s "[swbd [swsn:3 ~ ~ swsn:3?]]" # orbit 3 # room 0.35 # dilei 0.6 0.125 0.5,
+    note (d $ "[0,2,4,<6 7 8>]" + p) # m "3",
+    whenmod 16 8 (const $ note "~") $ note (d $ "[0 .. 3 7 .. 4]") # m "6",
+    s "~"]
+
+
+
+
+do
+  let p = (0 + "[0 0 3 [2 5 [~ 4]]]/8")
+      p2 = (0 + "[0 1 2 4 5 3 4 6]/8")
+      d = toScale (Sound.Tidal.Scales.lydian)
+      dilei a t f = delay a # delayt t # delayfb f
+  d1 $ stack[
+    n  "<1 1 2>*8" # s "feel" # cutoff (scale 600 4000 $ slow 4.3 $ tri) # resonance 0.15,
+    n (d $ "{0 7 0 0 7 }%4" + "[0 <0 7 4> 0 <4 7 [4,-3]>]" + p) # s "bass8" # shape 0.45 # gain 1.1,
+    whenmod 16 14 (const $ s "swsn:1*12" # speed (scale 3.4 1 $ slow 2 $ saw)  # orbit 3 # room 0.35) $ s "[swbd [swsn:3 ~ ~ swsn:3?]]" # orbit 3 # room 0.35 # dilei 0.6 0.125 0.5,
+    note (d $ (every 4 (const $ "0*8") $ "[0,7]") + "[0,2,4,<6 7 8>]" + p) # m "[2,3]" # sustain 0.3,
+    note (d $ "[0*4]"+p2) # m "[0,6]",
+    s "~"]
