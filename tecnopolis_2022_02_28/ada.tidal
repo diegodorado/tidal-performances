@@ -1,0 +1,43 @@
+import Control.Exception (assert)
+
+import Data.Word (Word8)
+
+import Data.Bits
+
+type Cell = Int
+
+type Line = [Cell]
+
+type Rule = Word8
+
+type CellSet = (Cell,Cell,Cell)
+
+-- returns a rotated a list n places
+rotated :: Int -> [a] -> [a]
+rotated n xs =  take <*> (flip drop (cycle xs) . mod n) $ length xs
+
+getCellSets :: Line -> [CellSet]
+getCellSets xs = zip3 ls xs rs
+  where
+    ls = rotated (-1) xs
+    rs = rotated ( 1) xs
+
+_ruleApply :: Rule -> CellSet -> Cell
+_ruleApply rule (l,c,r) = if (rule .&. (bit (4*l + 2*c + r)) > 0) then 1 else 0
+
+ruleApply :: Rule -> Line -> Line
+ruleApply rule line = map (_ruleApply rule) (getCellSets line)
+
+ruleGenerator :: Line -> Rule -> [Line]
+ruleGenerator initial rule = initial : (ruleGenerator (ruleApply rule initial) rule)
+
+addSpaces :: String -> String
+addSpaces [] = []
+addSpaces (x:[]) = [x]
+addSpaces (x:xs) = x:' ':addSpaces xs
+
+lineToStr :: Line -> String
+lineToStr line = addSpaces $ map cellToChar line
+  where cellToChar c = if c == 0 then '0' else '1'
+
+initCells = [0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0]

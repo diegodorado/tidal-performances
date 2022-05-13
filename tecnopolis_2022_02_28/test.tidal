@@ -1,0 +1,24 @@
+
+
+
+
+
+do
+  hush
+  let gen = ruleGenerator initCells 30 
+      xs = (take 1000 $ gen)
+      lines = map lineToStr xs
+      pats = map parseBP_E lines
+      sa = slow 8 $ cat pats
+      isa = inv sa
+      r = "[0 3]/8"
+      ns x = n (scale ("lydian") (x |+ r))
+      nsr pat = ns (round <$> pat)
+  d2 $ s "bd*256" # gain 0 # knit (sa)
+  d1 $ jux (degrade.rev.(#speed 1.1)) 
+    $  struct sa $ s "<bd sn:5>"
+    + room 2.99 + size 0.9
+
+  d4 $ struct sa $ ns "[0 [<6 8> 7]]" 
+    # s "bass8" # shape 0.3 # gain 1
+
