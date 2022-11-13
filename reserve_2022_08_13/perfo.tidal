@@ -1,0 +1,172 @@
+do
+  let ns p = note (scale "dorian" p)
+      b = "[6 2 7 4]/16"
+  hush
+  d1 $ s "<cp*4 ~ snap*4 sh*4>" # n (slow 2.5 $ run 10)
+
+
+
+do
+  let ns p = note (scale "dorian" p)
+      b = "[6 2 7 4]/16"
+  hush
+  d0 $ sometimes (off 0.125 (#speed 1.2)) $ s "<bd:2(3,8) sn:2>"
+  d2 $ shuffle 4 $ slow 4 $ chop 32 $ s "drums"
+    # hpf 300
+    # gain 1.1
+  m1 $ ns ("[0,2,4,6]" |+b -7 )
+  d1 $ shuffle 4 $ every 4 (const $ s "hh*[4 8 16 1]") $  within (0,0.25) (sometimes (*speed (-2))) $ s "<cp ~ snap sh>*4" # n (slow 2.5 $ run 10)
+   + dilei 0.4 "<1 0.5 0.125>" 0.5
+
+
+do
+  let ns p = note (scale "dorian" p)
+      b = "[6 2 7 4]/16"
+  hush
+  setcps 1
+  d0 $ s "bd:2*2"
+  d1 $ s "hh:1*4"
+  m3 $ ns ("{0 7 14 0 }%8" |+ b |-7)
+    # gain "1.2 0.93!2 1"
+    # sus 0.15
+
+
+do
+  let ns p = note (scale "dorian" p)
+      b = "[6 2 7 4]/16"
+  hush
+  d0 $ sometimes (off 0.125 (#speed 1.2)) $ s "<bd:2(3,8) sn:2>"
+    # shape 0.1
+  d7 $ avatar "12 15"
+    # size "0.04 0.02"
+    # life 2
+    # fxs "grayscale" # fbWet 0.9
+  d0 $ s "bd:2*2"
+  d1 $ whenmod 16 14 (const $ (fast "[[4 16?] 4 8 16]/2"  $ s "sn:7") # speed (slow 2 $ 1 + isaw*2)) $ s "~ sn:5" # hpf 300
+    # cut 3
+  d2 $ s "impact:12/16"
+    # shape 0.2
+  d4 $ s "hh hh oh hh" 
+    # dilei 0.5 0.125 0.8
+    # n (irand 5)
+    # hpf 300
+  m3 $ ns ("{0 7 <13 14 9 ~> <7 8 9 8> 14 0 }%8" |+ b |-7)
+    # gain "1.15 0.99!2 1"
+    # sus 0.05
+  m3 $ ns ((shuffle 8 $ sometimes (|+| slow 2 (run 16)) $ "[0|7]*8") |+ b |-7)
+    # gain "1.15 0.99!2 1"
+    # sus (slow 8 $ range 0.05 0.1 $ perlin)
+  m4 $ ns ((degrade $ shuffle 8 $ slow 2 "{0 1 2 3 4 5 6 7 8 9 10 16 14 17 }%16") |+ b |-7)
+    # gain "1.25 0.99!2 1.3"
+    # legato 1.25
+  m4 $ ns (stack[ round <$> (struct "[t(9,16,2)]/2" $ slow 4 $ perlin*14 + rand*4),
+                  round <$> (struct "[t(11,16)]/2" $ slow 4 $ perlin*7 + rand*7 )])
+    # sus (slow 8 $ range 0.1 0.1 $ perlin)
+   -- # legato 1.5
+   # gain 1.25
+  m4 $ ns (stack["[0 .. 7]", round <$> (struct "[t(<9 13>,16,<0 2>)]/2" $ slow 4 $ saw*14 + rand*4)])
+    # sus (slow 8 $ range 0.08 0.12 $ perlin)
+    # gain (fast 2 $ "1.25 0.99!2 1.3")
+  hush
+  d0 $ s "bd:2(3,8)"
+     #  avatar ("0" |+ irand 10)
+     # life 0.1
+  d1 $ s "~ sn:4"
+     #  avatar ("0" |+ irand 10)
+     # size 0.5
+     # life 0.1
+  m5 $ ns (arp "updown" $ "[0,2,4,6]" |+ b )
+    # sus 0.2
+  m5 $ ns ("[0,2,4,6](3,8,<0>)" |+ b )
+  m3 $ ns ("[0](3,8,0)" |+ b -7 )
+
+
+  d2 $ shuffle 4 $ slow 4 $ chop 32 $ s "drums"
+    # hpf 300
+    # gain 1.1
+
+  m1 $ ns ("[0,2,4,6]" |+b )
+
+  d1 $ shuffle 4 $ every 4 (const $ s "hh*[4 8 16 1]") $  within (0,0.25) (sometimes (*speed (-2))) $ s "<cp ~ snap sh>*4" # n (slow 2.5 $ run 10)
+   + dilei 0.4 "<1 0.5 0.125>" 0.5
+
+do
+  let ns p = note (scale "dorian" p)
+      b = "[6 2 7 4]/16"
+  hush
+  d0 $ sometimes (off 0.125 (#speed 1.2)) $ s "<bd:2(3,8) sn:2>"
+    # shape 0.1
+  d1 $ every 4 (const $ s "hh*[4 8 16 1]") $  within (0,0.25) (sometimes (*speed (-2))) $ s "<cp ~ snap sh>*4" # n (slow 2.5 $ run 10)
+   + dilei 0.4 "<1 0.5 0.125>" 0.5
+  m3 $ ns ("[0 ~!3]/2" |+ b |-7)
+    # gain 1.15  # legato 1.8
+  m1 $ ns ("[0,2,4,6]" |+b -7)
+  m2 $ slow 4 $ ns (sometimes (+"[0,[6 7 8 9]]") $ struct "t(13?,16,<0 2 3>)" $ run 7 + irand 4)
+
+  m4 $ ns ( round <$> (struct "t(16?,8)" $ slow 8 $ tri*16 + (fast 8 $ degradeBy 0 $ "<5 [4 5]> 7 6 7")))
+   # legato 2
+ 
+
+once $ s "riser:1" 
+
+do
+  let ns p = note (scale "aeolian" p)
+      b = "[0 [3 -1]]/16"
+  hush
+  d0 $ sometimes (off 0.125 (#speed 1.2)) $ s "<bd:2(3,8) <cp:4 sn:2>>"
+    # shape 0.1
+  d0 $ whenmod 16 16 (const $ s "bd:5*6" # speed (slow 2 $ isaw*2+1 )) $ s "bd:2*2" # gain 1.1 
+    # cut 2
+  d0 $ sometimes(stut' 4 "<0.125 0.25>" (*speed 1.1)) $ struct  "t(3,8)" $ s "bd:2 sn:3@3" # gain 1.1 
+    # cut 2
+  d0 $ s "bd:2*2" # gain 1.1 
+    # cut 2
+  m3 $ ns ("0*4" |+ (irand 0) )
+    # sus 0.08
+    # gain "1.2 1@3"
+
+  m4 $ slow 2 $ ns (sometimesBy 0.2 (stut' 3 (0.125/4) (+1)) $ round <$> struct ("1100") (perlin*10+rand*1))
+    # legato 1.5
+    # avatar (shuffle 16 $ run 16) # size 0.1
+  m1 $ ns ( "[0,2,4,6,8]/2" |+ b )
+    # sus 0.6
+
+  m3 $ ns ("{ 0 0 7 0 0 7 [13 14] 0 [13 14] 21*2 }%4" |+ b |-7)
+    # sus 0.15
+    # gain (range 0.9 1.1 $ rand)
+  m5 $ ns ( off 0.125 (+2) $ "[0,2,4,<6 8 9>]" |+ b)
+    # sus 0.15
+
+  d4 silence
+  -- m1 $ ns ("[0,2,4,6,<14 11 8>,<10 9 7>]/2" |+b -7)
+  -- m3 $ ns ("[0 ~ ~ <~ 7 ~ [~ ~ 6 7]>]/2" |+ b |-7)
+  m3 $ ns (sometimes (off "<0 0.125>" (+7)) $ "{0  0 <~ 0> 7 <0 [6 7]>}%4" |+ b |-7)
+    # sus 0.3
+  -- m2 $ slow 4 $ ns (sometimes (+"[0,<2 3 [2 4]>,[6 7 8 9]]") $ struct "t(13?,16,<0 2 3>)" $ run 7 + irand 4)
+  m4 $ ns (round <$> struct ("1100") (perlin*12+rand*2))
+    # legato 1.5
+    # avatar (shuffle 16 $ run 16) # size 0.1
+
+  m5 $ ns ( off 0.125 (degradeBy 0.7).(+7)  $ "[0,4,<6 7>,8,<10 11 12>, <15 16 18 19>]")
+  m5 $ ns ( off 0.125 (degradeBy 0.7).(+7)  $ "[0,4,<6 7>,8,<10 11 12>, <15 16 18 19>]")
+
+  m4 $ ns (round <$> struct (shuffle 8 $ "10101010") (slow 4 $ perlin*8 + 4*rand))
+    # sus 0.5
+
+  d1 $ avatar "2*2" # size 0.3  # x "0.1 0.8" # life 0.08 # nudge (0.05) |+ avatar (irand 100)
+
+  d1 $ within (0,0.25) (sometimes (*speed (-2))) $ s "<cp ~ snap sh>*4" # n (slow 2.5 $ run 10)
+   + dilei 0.2 "<1 0.5 0.125>" 0.5
+  m1 $ ns ("[0,2,4,6,<14 11 8>,<10 9 7>]/2" |+b -7)
+  m3 $ ns ("[0 ~ ~ <~ 7 ~ [~ ~ 6 7]>]/2" |+ b |-7)
+  m3 $ ns ("{0 ~ ~ <~ 7 ~ [6 7]> 0 ~ 7 ~ 14}%4" |+ b |-7)
+  m2 $ slow 4 $ ns (sometimes (+"[0,<2 3 [2 4]>,[6 7 8 9]]") $ struct "t(13?,16,<0 2 3>)" $ run 7 + irand 4)
+
+  m2 $ slow 4 $ ns (sometimes (+"[0,[2 4],6,[9 8 7 6]]") $ struct "t(13,16,<0 2 3>)" $ run 7 + irand 4)
+  m2 $ slow 4 $ ns (struct "t(13,16,<0 2 3>)" $ run 7 + irand 7)
+
+  m2 $ slow 4 $ ns (run 8 |+ irand 7)
+  m4 $ ns ( round <$> (struct "t(<3 5 3>,8,<0 1 2 3>)" $ slow 4 $ tri*16 + (fast 8 $ saw*2)))
+   # legato 1.5
+ 
+

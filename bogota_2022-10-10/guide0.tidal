@@ -1,0 +1,212 @@
+
+do
+  let ns p = note (scale "majPent" p) |+| x (fromIntegral <$> p)*0.1
+      root = "[0 -1 -2]/32"
+      melo0 = (slow 8 $segment 8 $  perlin*5 + irand 3)
+      melo = round <$> melo0 
+  hush
+  -- panic
+  setcps 1
+  m1 $ stack[
+    stack[
+    ns (iter 4 $ run 4 |+ root) |+| x 0 # sus 0.2,
+    ns (degradeBy 0.8 $ iter 4 $ run 8 |+ root |+ 5) |+| x 0 ,
+    ns (struct "1*[2|4]?" $ melo) |+| x 0,
+    ns (struct "1*8?" $ irand 8)  |+| x 2,
+    silence] 
+    # size (9) # speed 30 # z (-2) # y (perlin*2),
+    c1 (0.2 + (slow 4 $ perlin*0.7)),
+    c2 (slow 3 $ sine),
+    c3 0.1,
+    c4 ( slow 5.5 $ 0.2*perlin),
+    c5 0.3,
+    c6 0.8,
+    silence] 
+  d1 $ s "bd"
+  m2 $ stack[
+    ns ("-11" |+ root ) # sus 0.7,
+    silence] 
+    # z 3
+    # size 40 # speed 10 
+    |-| x 12
+    # y (-0.5)
+  m2 $ stack[
+    -- ns ("{0 [4 5] 0*2 ~ [9 10] 5}%4" |+ root |- 11 ), -- # sus 0.7,
+    --ns ("{0 0*2 ~ 5 10*2}%4" |+ root |- 11 ) # sus 0.1,
+    -- degradeBy 0.9 $ ns (struct (slow 8 $ ascii "reserve_") $ ("0*16" |+irand 16) |+ root |- 1 ) # sus 0.08,
+    ns ("-11" |+ root ) # sus 0.7,
+    silence] 
+    # z 0
+  m1 silence
+  m3 $ stack[
+    stack[
+      ns (arpg $ "[0,1,2,<4 6 9 7>]" |+ root) # size 5 # speed 20 # y "<0 0.5>" # x (slow 2 saw) # z (-1) ,
+      ns ("[0,1,2,<4 6 9 7>]" |+ root) # size 5 # speed 20 # y "<0 0.5>",
+      ns (slow 4 $ repeatCycles 4 $ struct ("1") (irand 12)),
+      ns (slow 2 $ repeatCycles 4 $ struct ("1") ("-7" |+ irand 12)),
+      ns (slow 4 $ repeatCycles 4 $ struct ("1(5,8)") ("-14" |+ irand 14)),
+      silence],
+    c1 0.1,
+    c2 0.9,
+    c3 0.2,
+    c4 0.9,
+    silence] 
+  m3 $ stack[
+    ns ("[0,2]" |- 5),
+    -- ns (repeatCycles 4 $ slow 2 $ off 0.125 (+"[2|3]") $ struct ("11011011") (run 10)) # sus 0.1#size 10,
+    -- ns (repeatCycles 4 $ (0.5 ~>) $  shuffle 4 $ struct (binary 47896) (run (choose([14,12,10])))),
+    ns (slow 2 $ repeatCycles 1 $ struct ("1(7,16)") ("-2" |+ run 10 |+ irand 4)) # sus 0.05 # size 1 # y rand |-| x 10,
+    ns (slow 2 $ repeatCycles 4 $ struct ("1(3,8)") ("-7" |+ irand 12)),
+    -- ns (slow 2 $ repeatCycles 4 $ struct ("1(5,8)") ("-14" |+ irand 14)),
+    -- ns (slow 2 $ repeatCycles 4 $ struct ("1(<7 5>,<16 8>)") ("-10" |+ irand 10)),
+    stack[
+      c1 0.4,
+      c2 0.3,
+      c3 0.2,
+      c4 0.1,
+      silence],
+    silence] 
+  m1 $ stack[
+    c1 0.6,
+    c2 0.0,
+    c3 0.0,
+    c4 0.0,
+    c5 0.0,
+    c6 0.0,
+    stack[
+    ns (iter 4 $ run 4 |+ root) # sus 0.2 # size 5 # speed 10 |*| x 0.5,
+    -- ns (iter 4 $ run 8 |+ root |+ 2) # sus 0.2,
+    -- ns (struct "1*2?" $ irand 8)  |+| x 2,
+    -- ns (struct "1*2?" $ irand 10 |- 5)  |+| x 2,
+    -- ns ("{0 [4 5] 0*2 ~ [9 10] 5}%8" |+ root |- 6 ),
+    -- ns (struct "1*8?" $ irand 7 |+ 3)  |+| x 2,
+    silence],
+    silence]
+  m2 $ stack[
+    ns ("-11" |+ root ) # sus 0.7,
+    silence] 
+    # size 20 # speed 10 
+    # x 0.5
+    # z 0
+  d2 $ slow 2 $ "~ sn:3" # speed 0.4
+   + dilei 0.5 0.25 0.4
+  d3 $ slow 16 $ shuffle 8 $ chop 32 $ s "drums" # hpf 3600
+   + dilei 0.5 "<0.125 0.5 0.33>" "0.4 0.8"
+
+
+do
+  let ns p = note (scale "[ritusen majPent]/8" p) -- |+| x (fromIntegral <$> p)*0.1
+      root = "[0 -1 -2]/32"
+      -- root = "[0 -1 -2 1]/32"
+      melo0 = (slow 8 $segment 16 $  perlin*5 + irand 3)
+      melo = round <$> melo0 
+  hush
+  -- panic
+  setcps 1
+  m1 $ stack[
+    stack[
+      -- ns (shuffle 4 $cat ["0*8", "0(9,16)", "5*4", "3*8?"] |+ root),
+      ns ("1*8" |+ (run 16) |+ irand 4),
+      ns ("4*8" |+ (run 8) |+ irand 4),
+    silence] 
+    # x (slow 4 $ perlin) # size (2 + rand*9) # speed 30 # z (-1) # y (perlin),
+    c1 0.6,
+    c2 0.1,
+    c3 0.1,
+    c4 (slow 7.7 $ perlin*0.6),
+    c5 0.0,
+    c6 0.0,
+    silence] 
+  m2 $ stack[
+    mono $ ns (every 2 (sometimes (+5)) $ "{0 [4 5] 0*2 ~ [9 10] 5}%4" |+ root |- 11 ) # y rand, -- # sus 0.7,
+    -- mono $ ns ("{0 [4 5] 0*2 ~ [9 10] 5}%4" |+ root |- 11 ) # y rand, -- # sus 0.7,
+    -- ns ("[0(3,8)]/2" |+ root |- 11 ), -- # sus 0.3,
+    -- ns ("0(3,8,<0 1>)" |+ root |- 13 ) # sus 0.1,
+    silence] 
+    # size 10 # speed 10 
+    # x 0.5 
+  m3 $ stack[
+    stack[
+      ns ("[10,5](2,8,<0 1 2>)" |+ root),
+      ns (repeatCycles 4 $ slow 8 $ struct (ascii "reserve_") (run 10) |- 5),
+      ns (repeatCycles 4 $ slow 8 $ struct (ascii "rtoken__") (run 14) |- 9),
+      -- ns (repeatCycles 4 $ (0.5 ~>) $  struct (binary 111) (run 10)),
+      ns (arpg $ "[0,1,2,<4 6 9 7>]" |+ root) # size 5 # speed 20 # y "<0 0.5>" # x (slow 2 saw) # z (-1) ,
+      ns (off 0.125 (+2) $ struct ("1(3,8,<0 1 2>)") (irand 10)) # sus 0.1,
+      ns (slow 4 $ repeatCycles 4 $ struct ("1(7,16)") (irand 10)),
+      -- ns (slow 2 $ repeatCycles 4 $ struct ("1") ("-7" |+ irand 12)),
+      -- ns (slow 4 $ repeatCycles 4 $ struct ("1(5,8)") ("-14" |+ irand 14)),
+      -- ns (slow 2 $ repeatCycles 1 $ struct ("1(7,16)") ("-2" |+ run 10 |+ irand 4)) # sus 0.05,
+      -- ns (slow 2 $ repeatCycles 4 $ struct ("1") ("-7" |+ irand 12)),
+      -- ns (slow 4 $ repeatCycles 4 $ struct ("1(5,8)") ("-14" |+ irand 14)),
+        silence],
+    c1 0.8,
+    c2 0.8,
+    c3 (slow 8 $ perlin*0.6),
+    c4 (slow 7.7 $ perlin*0.6),
+    silence] 
+  d1 $  s "<bd*2 bd*1 bd*1 bd*8?>" # n 5 # gain 1.05
+  d1 $  s "bd" # n 5 # gain 1.05
+  d2 $ slow "4@3 <8 2>" $ shuffle "<16 8 4 32>" $  chop 32 "drums" # hpf 3000 # hpq (slow 8 $ rand*0.3)
+    # gain 0.9
+    + dilei 0.5 0.5 0.4
+
+
+  m3 $ stack[
+    ns ("[0,2]"),
+    -- ns (repeatCycles 4 $ slow 2 $ off 0.125 (+"[2|3]") $ struct ("11011011") (run 10)) # sus 0.1#size 10,
+    -- ns (repeatCycles 4 $ (0.5 ~>) $  struct (binary 111) (run 10)),
+    ns (slow 2 $ repeatCycles 1 $ struct ("1(7,16)") ("-2" |+ run 10 |+ irand 4)) # sus 0.05,
+    ns (slow 2 $ repeatCycles 4 $ struct ("1") ("-7" |+ irand 12)),
+    ns (slow 4 $ repeatCycles 4 $ struct ("1(5,8)") ("-14" |+ irand 14)),
+    -- -- ns (slow 4 $ repeatCycles 4 $ struct ("1(5,8)") ("-10" |+ irand 10)),
+    stack[
+      c1 0.1,
+      c2 0.2,
+      c3 0.2,
+      c4 0.3,
+      c6 0.1,
+      silence],
+    silence] 
+
+  d3 $ slow 16 $ shuffle 8 $ chop 32 $ s "drums" # hpf 3600
+   + dilei 0.5 0.25 0.4
+
+  m1 $ stack[
+    c1 0.2,
+    c2 0.3,
+    c3 0.3,
+    c4 0.2,
+    c5 0.3,
+    c6 0.4,
+    stack[
+    ns (iter 4 $ run 4 |+ root) # sus 0.2 # size 5 # speed 10 |*| x 0.5,
+    ns (iter 4 $ run 8 |+ root |+ 2) # sus 0.2,
+    ns (struct "1*8?" $ irand 8)  |+| x 2,
+    ns ("{0 [4 5] 0*2 ~ [9 10] 5}%8" |+ root |- 6 ),
+    -- ns (struct "1*8?" $ irand 7 |+ 3)  |+| x 2,
+    silence],
+    silence]
+  m2 $ stack[
+    ns ("-11" |+ root ) # sus 0.7,
+    silence] 
+    # size 20 # speed 10 
+    # x 0.5
+    # z 0
+
+
+do
+  let ns p = note (scale "[ritusen majPent]/8" p) -- |+| x (fromIntegral <$> p)*0.1
+      root = "[0 -1 -2]/32"
+      -- root = "[0 -1 -2 1]/32"
+      melo0 = (slow 8 $segment 16 $  perlin*5 + irand 3)
+      melo = round <$> melo0 
+  hush
+  -- panic
+  setcps 1
+  d0 $ slow 2 $ s "bd"
+    # x 0.5 # size 20 # speed 20 # z (-1) # y 0.5
+  m1 $ stack[
+      -- ns ("1" |+ (run 8) |+ irand 4),
+    silence] 
+    # x 0.5 # size 20 # speed 20 # z (-1) # y 0.5
