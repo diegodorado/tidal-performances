@@ -1,0 +1,44 @@
+do
+  let ns pat = note (scale "dorian"  pat)
+      nsr pat = ns (round <$> pat)
+      b = "[0 2 1 0]/16"
+  hush
+  d1 $ superimpose (# speed (slow 8 $ range 0.9 1.1 $ sine)) $ fast 2 $ iter 4 $  n ("3 4 [2|7] 1") # s "hh"
+    # dilei 0.5 0.125 0.4
+    # cut 2
+    -- # lpf 3000
+  d0 $ s "swbd*2" # gain 1.05
+  m5 $  ns ( every 2 degrade $ "{0 7 0 0 <14 8 6> 7 0 4 -1}%8" |- 7)
+  m5 $  ns ( off "<3e 1e 5e>" (+7) $  "{0 0 0 <14 8 6> 7 0 4 -1}%4" |- 7 |+ b)
+  -- m7 $  ns ( stut' 3 "1q 1e" (+ "<2 3 4>") "[0 1 ~ <4 5 7>]" |+ 7 |+ b ) 
+    -- # legato "<2 2 1>"
+  m7 $  ns ( "0(<3 3 5>,8,<0 1 2 0>)" |+ "[0,2,4,<[10 11] 9 8 6>]" |+ 7 |+ b)
+    # legato (range 0.5 2 $ slow 4 sine)
+  m3 $  ns ( "{4 6 7 14 7}%8?" |+ b +7)
+
+  d2 $ superimpose (shuffle 4).rev $ slow 2 $ s "~ <sn:5 sn:7(5,8)>"
+  d3 $ s "cp*8" # hpf 600
+   # n (iter 4 $ slow 2 $ run 16)
+   # speed (range 0.8 1.5 $ rand)
+   # coarse 10
+
+
+
+
+  m5 $  ns ( "[0 ~ ~ [6 7]]/2" |+ b  |- 7)
+  m5 $  ns ( "[0  ~ 7 ~ ]/2" |+ b  |- 7)
+  m2 $  ns ( "[0,2,4]/4" |+ b)
+  -- d1 $ n (shuffle 4 $ slow 2 $ run 16) #  s "perc" # cut 1 # gain 0.8
+  m4 $ sometimes (within (0.5,1) $ fast 2).(+ n "0 14") $  ns ( "[0*4]" |+ b |+ (irand 18)  )
+
+  d3 $ s "sh" # n (irand 8)
+  m3 $  ns ( (sometimes ( off 0.125 (+2)) $ "[0,2,4,<8 9 7>]/4") |+ b)
+  m6 $  nsr ( "[0*8?]/2" |+ (perlin *  12) |+ b |+7 ) # legato "<2 2 1>"
+
+  m2 $  ns ( "[0,2,4,6,8]/2" |+ b)
+  d2 $ slow 2 $ chop 64 $ s "[fm:11]/4"
+    # dilei 0.2 0.5 0.5
+    # shape 0.3
+    # coarse 100
+  m6 silence
+
