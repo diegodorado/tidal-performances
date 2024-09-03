@@ -1,0 +1,137 @@
+-- hide tmux bar: set -g status
+-- hide vim line numbers: set nornu and set nonu
+
+-- aeolian "[0@3 -3 -2@3 -1]/8"
+-- phrygian "[0@2 1 -1]/8"
+-- phrygian "[0@2 <1 3> -1]/8"
+-- phrygian "[0@2 <1 3> <-1 1>]/8"
+-- lydian "[0 1]/8"
+-- lydian "[0 1]/8"
+
+d0 $ s "bd sn:5"
+
+do
+  let bass = "{0 0 7 0 [-1 0] 0 [6 7]}%4"
+      sc = "aeolian" 
+      ns pat = note (scale sc pat)
+      nsr pat = ns (round <$> pat)
+      b = "[0@3 -3 -2@3 -1]/8"
+  hush
+  -- m1 $ ns ( "0(3,8)" |+ "[0|7]" |+ b -7 )
+  -- m4 $ ns ( "[0,2,4]" |+ b) # sus 0.25
+  d2 $ struct "1(3,8)" $ s "bd sn sn"
+  d1 $ stack[
+    n "1..4" # s "hh",
+    n "{1 2 3 4 5 6 7 8 9 10 11 12 13 14 }%<8 4>" # s "sn"
+    ]
+
+  m6 $ iter 4 $ ns (off 0.5 degrade.(+7) $ off 0.25 (+"<7 9 8 7>") $ "0(3,8)" )
+  m6 $ nsr (struct "1(<3 5>,8, <0 1 2 3>)" $ slow 4 $ perlin*8 + rand*4 + 4 )
+  m6 silence
+  d1 silence
+  once $ s "riser"
+  d4 $ s "impact*4?"
+    # pan (slow 3 $ sine)
+    # n (irand 10)
+    # hpf 600
+    # cut 5
+
+
+do
+  let bass = "{0 0 7 0 [-1 0] 0 [6 7]}%4"
+      -- sc = "lydian"
+      sc = "aeolian" 
+      -- sc = "phrygian" 
+      ns pat = note (scale sc pat)
+      nsr pat = ns (round <$> pat)
+      b = "[0@3 -3 -2@3 -1]/8"
+      -- b = "[0@2 1 -1]/8"
+      -- b = "[0 1 2 [3 4]]/16"
+      -- bass = "{ 0 7 ~ 7 0 [-1 0] }%4"
+  -- panic
+  hush
+  d0 $ slow 2 $ s "bd sn:5"
+  d1 $ s "~ oh:4" + dilei 0.5 0.25 0.3
+
+  -- d1 $ s "~ [oh:4*2 hh:2]" + dilei 0.5 0.25 0.6
+  -- m4 $ ns ("[0,2,<4 5>,<6 8>, 11]" +| 0 +|b) # sus 0.4
+  m1 $ mono $ ns ( within (0.25, 1) (degradeBy (slow 4 $ sine)) $ bass + b |-7)
+  m3 $ sometimes (fast 2) $ ns ("0 2 4 <6 7 8 9>")
+  m3 $ ns ("{0 ~ 4 6 [11 10] 8 9}%4")
+  m3 $ ns ("{[0,4,[6 8?]] ~}%4")
+  m3 silence
+  m4 $ ns ("[0,2,<4 5>,<7 11 10>]" +| 7 +|b) # sus 0.4
+  m4 $ ns ("[0,2,4,6,<9 11 8 8>]" +| 0 +|b) # sus 0.3
+
+  m5 $ degrade $  nsr (segment "<4 2>" $ slow 2 $ perlin*10+rand*2+2)
+
+  m3 silence
+  m2 $ degrade $  nsr (segment "<4 2>" $ slow 2 $ perlin*10+rand*2+7)
+  m6 $ degrade $  nsr (segment "<4 2>" $ slow 2 $ perlin*10+rand*2+9)
+
+  m3 $ ns ("{0 ~}%4" )
+
+  m6 $ nsr (segment 4 $ slow 4 $ perlin*10 + rand*2 + 3)
+
+
+  -- m4 $ ns ("[0,2,<4 5>]" +| 7 +|b) # sus 0.3
+  -- m2 $ degrade $ nsr (segment "<4 4>" $ slow 2 $ perlin*10+rand*2+7)
+  -- m5 $ degrade $ nsr (segment "<4 4>" $ slow 2 $ perlin*10+rand*2+5)
+  m1 $ mono $ ns ( bass + b |-7)
+
+
+  m4 $ ns ("[0,2,4,6,<9 11 8 8>]" +| 0 +|b) # sus 0.3
+
+  m5 $ nsr (struct (slow 8 $ "1(11,16,<0 1>)") $ slow 1 $ perlin*10+rand*2+2)
+  m6 $ nsr (struct (slow 8 $ "1(11,16,<0 1>)") $ slow 1 $ perlin*10+rand*2+4)
+
+
+
+  m2 $ nsr (struct (slow 2 $ "1(11,16,<0 1>)") $ slow 2 $ perlin*10+rand*2+6)
+   # legato 1.5
+
+
+  m3 $ ns (off 0 (+"<2 5>") $ "{0 1 2 3}%4")
+
+
+  d0 $ s "bd sn:5"
+  m1 $ ns ( bass + b |-7)
+  d5 $ begin ("0*8?" |+ rand*0.8) # s "tuvan:1" # cut 2
+    # shape 0.1
+    # ns ( b |+ "[0|7]")
+
+
+  m3 $ ns ("{0 ~}%4")
+  d2 $ s "perc*8?"
+    # pan rand
+    # n (irand 3)
+  m3 $ ns ("{[0,4,[6 8?]] ~}%4")
+  m6 $ degrade $  nsr (segment "<2 4>" $ slow 3 $ perlin*12 + rand*4 + 7)
+   # legato 1.3
+
+  m3 $ ns ("{[10,7] [9,7] 6 5 ~}%4" |+ b)
+
+  m5 $ struct "1(3,8,<0 1>)" $  ns ("0 7" |+ b - 7)
+  m2 $ ns (sometimes arpg $"[0,2,4,6](3,8,<2 4>)" |+ b)
+
+  -- m3 $ ns ("{ 0 7 7 10 ~ ~ }%8" |+ b - 0)
+
+  m4 $ ns (off 0.5 (+7) $ "{ 0 7 11 ~!12 }%8" )
+
+  d1 $ every 4 (#accelerate 2) $sometimesBy 0.8 (slow 2) $ within (0.25,1) (sometimes (#coarse 10).(jux rev)) $ shuffle 4 $ s "sn:2 hh sh:4 hh "
+    + dilei 0.3 "[0.25|0.125|0.33]" 0.3
+    # hpf 700
+    # lpf (slow 4 $ range 900 2000 $ sine)
+    # lpq (slow 5.4 $ perlin*0.2)
+  d2 $ sometimes (fast 2) $ slow 8 $ shuffle 16 $  striate 32 $ s "drums"
+    # hpf 1700
+    # dilei 0.5 0.5 0.4
+    # gain 0.75
+  m3 $ struct "[1 0 1 1](5,8,<0 1>)" $  ns ( (sometimes (0.25 ~>) $ "[0,2,4,<8 9 7>]/3") |+ b)
+  m5 $ struct "1(3,8)" $  ns ("[0]" |+ b - 7)
+  -- m6 $ ns ((stut' 3 0.25 (+2)) $"{0 3 4 [6 7] ~ [10 11] ~!6}%2" |+ 7 ) -- # legato 1.2
+  -- m4 $ ns ((stut' "< 3 6>" "[0.125 0.25]" (+"+1")) $"{0 3 4 [6 7] ~ [10 11] ~!6}%2" |+ 7 ) -- # legato 1.2
+  -- m3 $ ns ((stut' "< 3 6>" "[0.125 0.25]" (+"+1")) $"{0 3 4 [6 7] ~ [10 11] ~!6}%2" |+ 7 ) -- # legato 1.2
+  m1 $ ns ("[0]/2" |+ b ) # sus 1.8
+
+  m6 $   struct "1(5,8,<1 2 >)" $  ns ("[0..20]/2" |+ b ) # legato 1.2

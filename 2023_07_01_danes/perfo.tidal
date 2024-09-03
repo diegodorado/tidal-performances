@@ -1,0 +1,32 @@
+do
+  let ns pat = note (scale "dorian"  pat)
+      nsr pat = ns (round <$> pat)
+      b = "[0 -3]/16"
+  hush
+  -- d1 $ iter 4 $  n ("[1 2 3 4]*2") # s "hh" # cut 1 # lpf 2200
+  d0 $ s "swbd*2" # gain 1.05
+  -- d2 $ slow 2 $ s "~ swsn:2"
+  -- d3 $ slow 8 $ chop 32 $ s "drums" # hpf 2000
+  -- m4 $ ns ( off "0.125 0.25"  (+"4 .. 7") $ "{ 0 4 9 ~!6 0 2 4 }%4" |+ "{ 0 -1 -2 -3 -7 }%1")
+  -- m4 $ ns ( stut' 4 "<0.125 0.25>"  (+"[1|2|3|4]") $ "0") # sus 0.1
+  -- m3 $  ns ( (sometimes ( off 0.125 (+2)) $ "[0,2,4,<8 9 7>]/4") |+ b)
+  m1 $ ns ( within (0,0.5) degrade $ "{0 7 0 0 <14 8 6> 7 0 4 -1}%8" |- 7 )
+  d4 $ begin ("0*8" |+ rand*0.8) # s "tuvan:1" # cut 3
+    # ns "0 0 2 3"
+
+  m6 $ ns (round <$> (struct "1(3,8,<0 0 2 3>)" $ (slow 4 $ perlin*14) + rand*4 ))
+    # legato 1.5
+
+  m2 $ ns ( "[0,2,4,6,8]/4" |+ b)
+  m2 $ ns (( slow (1+(slow 4 $ sine)) $ struct "10101010" $ "[0,2,4,6]") |+ b)
+
+
+
+  -- m3 $  ns ( (sometimes ( off 0.125 (+2)) $ "[0,2,4,<8 9 7>]/4") |+ b)
+  m6 $  nsr ( "[0*8?]/2" |+ (perlin *  12) |+ b |+7 ) # legato "<2 2 1>"
+  -- m3 $  ns ( "{4 6 7 14 7}%8?" |+ b +7)
+  m1 $  ns ( off "<3e 1e 5e>" (+7) $  "{0 0 0 <14 8 6> 7 0 4 -1}%4" |- 7 |+ b)
+
+
+
+

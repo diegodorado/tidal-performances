@@ -1,0 +1,6 @@
+#!/bin/bash
+# set -euf -o pipefail
+
+# hide tmux bar: set -g status
+tmux set status off
+nvim --cmd ':set exrc' start.scd perfo.tidal

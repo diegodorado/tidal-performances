@@ -1,0 +1,6 @@
+#!/bin/sh
+
+PYTHON=/usr/bin/python3
+INSTALL_PREFIX="/usr"
+export PATH="$INSTALL_PREFIX"/lib/carla:$PATH
+exec $PYTHON "$INSTALL_PREFIX"/share/carla/carla --with-appname="$0" --with-libprefix="$INSTALL_PREFIX" "$@"

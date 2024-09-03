@@ -1,0 +1,108 @@
+d1 $ s "bd"
+
+d1 $ layer [ silence,
+  id,
+  id.(slice 8 "4 7 8 3"),
+  id.(iter 4).(|* speed 0.8)] $ s "gtr",
+  id ] $ s "gtr"
+
+d1 $ layer [ 
+  id.(slice 16 "4 7 8 3"),
+  id.(#coarse "20").(#speed "0.5 0.75 1 2").(slow 4).(chop 128),
+  id.(sometimesBy 0.2 (#accelerate "<3 10>"))] $ s "gtr" # dilei 0.5 0.5 0.6
+
+d0 $ off 0.25 (*speed 2) $ s "[swbd hh swsn:2 oh]/2"
+  # dilei 0.5 "<0.125 0.33 0.25>" 0.6
+  
+
+do
+  let ns pat = note (scale "majPent"  pat)
+      b = "[0 [1@3 [2 1]]]/16"
+  m1 $ ns "{0 0 [7] [7 0] [9 8 5 5*2] 0 [2 3]}%1"
+  m2 $ slow 8 $ degrade $ shuffle 16 $ ns ((run 32) |-12)
+  m4 $ slow 8 $ degrade $ shuffle 16 $ ns ((irand 32) |-12)
+
+
+do
+  let ns pat = note (scale "ritusen"  pat)
+      nsr pat = ns (round <$> pat)
+      -- b = "[0 -3]/16"
+      b = "[0 [1@3 [2 1]]]/16"
+  hush
+  -- panic
+  d1 $ iter 2 $  n ("[3 2 ]*2") # s "hh" # cut 1 # lpf 9200
+    # dilei "[0.3]" 0.125 0.3
+  d1 $ iter 8 $  n ("[1 2 3 4]*2") # s "hh" # cut 1 # lpf 9200
+  d1 silence
+  d0 $ s "[down]/2"
+  d1 $ within (0.5,1) (sometimes (fast 8)) $ s "impact" # cut 1 # hpf 800 # n (irand 4)
+    # sus 0.3
+  m2 $ slow 2 $ shuffle 8 $ ns ((+"-7" |+ irand 8) $ "0..15" )
+  m5 $ slow 2 $ shuffle 8 $ ns ((+"-11" |+ irand 8) $ "0..15" )
+  -- m2 $ slow 2 $ shuffle 8 $ ns ((+"-7" |+ irand 8) $ "0..15" )
+  m1 $ ns ("{0 5 ~!4 [<8 6> 5] 2 ~}%4" )
+    # amp 1.25
+    
+  m4 $ ns ( "[0,2,4,8,10]/4" |+ b)
+    # sus 0.3
+  m4 $ ns ( "[0,2,4,8,10]/4" |+ b)
+    # amp 1.25
+    # sus 2.5
+
+  m5 $ ns (every 3 (const $ slow 2 $ run 16) $ every 2 (+|"[1|2|3](5,8,<0 1 2>)") $ "0 4?" )
+    # amp ("0.8*8" + perlin*0.3)
+    # sus ("0.1*8" + slow 4 perlin*0.1 + rand*0.1)
+  -- d2 $ s "[~!4 fx*2 ~!2]/4" # n ("1*4" |+ irand 9) # dilei "[0.5]" 0.5 0.8
+  m4 $ ns ( "[0,2,4,8]/4" |+ b)
+    # sus 0.3
+  m1 $ struct ( slow 2 "1(5,8,<0>)") $ ns (  "[0]*8" |- 1 |+b )
+  m3 $ struct ( slow 4 "1(9,16,<0 1 2 1>)") $ ns (  "[0,2,<4 5 6 7>]" |+b )
+    
+  -- d3 $ s "perc*4?" # hpf 600 # n (slow 4 $ run 8)
+  m6 $ stack [
+    struct "1(7,8,<0 2>)?" $  nsr (slow 4 $ perlin*8 |+ rand*2),
+    c1 (slow 4 sine),
+    c2 (slow 5 perlin),
+    c3 (slow 6 sine),
+    c4 (slow 7 sine),
+    c5 (slow 9 sine),
+    c6 (slow 1 rand),
+    c7 (slow 15 sine),
+    -- c8 (slow 19 sine),
+    "~" ] 
+      # sus ("0.1*8" |+ perlin*0.4)
+  -- d3 $ slow 8 $ chop 32 $ s "drums" # hpf 2000
+
+  m6 silence
+  m5 $  nsr ( "[0*8?]/2" |+ (perlin *  12) |+ b |-0 ) # legato "<2 2 1>"
+  m2 $  nsr ( "[0*8?]/2" |+ (perlin *  12) |+ b |+"[4|2|3]" ) # legato "<2 2 1>"
+
+  d3 $ slow 16 $ shuffle 8 $  chop 32 $ s "drums" # hpf 700 # gain 1.16
+  d4 $ begin ("0.2*4?" |+ rand*0.3) # s "tuvan:1" # cut 3
+    # ns (slow 16 "0 <3 2>")
+    # dilei 0.5 0.5 0.5
+    # sus 0.2
+
+  -- d2 $ slow 2 $ s "~ swsn:2"
+  -- d3 $ slow 8 $ chop 32 $ s "drums" # hpf 2000
+  -- m4 $ ns ( off "0.125 0.25"  (+"4 .. 7") $ "{ 0 4 9 ~!6 0 2 4 }%4" |+ "{ 0 -1 -2 -3 -7 }%1")
+  -- m4 $ ns ( stut' 4 "<0.125 0.25>"  (+"[1|2|3|4]") $ "0") # sus 0.1
+  -- m3 $  ns ( (sometimes ( off 0.125 (+2)) $ "[0,2,4,<8 9 7>]/4") |+ b)
+  m1 $ ns ( within (0,0.5) degrade $ "{0 7 0 0 <14 8 6> 7 0 4 -1}%8" |- 7 )
+
+  m6 $ ns (round <$> (struct "1(3,8,<0 0 2 3>)" $ (slow 4 $ perlin*14) + rand*4 ))
+    # legato 1.5
+
+  m2 $ ns ( "[0,2,4,6,8]/4" |+ b)
+  m2 $ ns (( slow (1+(slow 4 $ sine)) $ struct "10101010" $ "[0,2,4,6]") |+ b)
+
+
+
+  -- m3 $  ns ( (sometimes ( off 0.125 (+2)) $ "[0,2,4,<8 9 7>]/4") |+ b)
+  m6 $  nsr ( "[0*8?]/2" |+ (perlin *  12) |+ b |+7 ) # legato "<2 2 1>"
+  -- m3 $  ns ( "{4 6 7 14 7}%8?" |+ b +7)
+  m1 $  ns ( off "<3e 1e 5e>" (+7) $  "{0 0 0 <14 8 6> 7 0 4 -1}%4" |- 7 |+ b)
+
+
+
+
